@@ -1,0 +1,26 @@
+{
+  "name": "TrackTime-Backend",
+  "version": "1.0.0",
+  "description": "TrackTime backend REST API",
+  "main": "index.js",
+  "repository": "https://github.com/AhmedM-Dev/Backend-TrackTime.git",
+  "author": "Ahmed Mahmoudi",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "firebase": "^5.9.0",
+    "firebase-admin": "^7.1.0",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^1.18.10"
+  }
+}

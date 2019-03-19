@@ -1,0 +1,36 @@
+{
+  "user": {
+    "uid": "5Tk2h6qNmjWCTZTo2cq3CQVhxl33",
+    "displayName": null,
+    "photoURL": null,
+    "email": "ahmed.tux@protonmail.com",
+    "emailVerified": false,
+    "phoneNumber": null,
+    "isAnonymous": false,
+    "providerData": [
+      {
+        "uid": "ahmed.tux@protonmail.com",
+        "displayName": null,
+        "photoURL": null,
+        "email": "ahmed.tux@protonmail.com",
+        "phoneNumber": null,
+        "providerId": "password"
+      }
+    ],
+    "apiKey": "AIzaSyC_NBVLPhgaiBYOMnYNEbyL35o3U7fuXZ0",
+    "appName": "[DEFAULT]",
+    "authDomain": "mobile-tracktime.firebaseapp.com",
+    "stsTokenManager": {
+      "apiKey": "AIzaSyC_NBVLPhgaiBYOMnYNEbyL35o3U7fuXZ0",
+      "refreshToken": "AEu4IL0PZcLcmht9POTSpATcmJBWOt1oOTFKWV2eQLaIA7vAkfms1sKN-_HfV7YaKYrIFXUAzb4MOmDsRspi4KlOs2Iq2vOM8IeNeGIbeSL3arvD87rpHD1Gw_hj-se-sI6w48Ilks29AQJGsy2AjTZ-meU1YosbJq7SVypqh-XDf1eX57B-HRE-FZN8ltjJ-ORXT2hqeiR8ARDQXUJr0Goxj6AB8sKIOkc8lBDmjTLc2u2B_dSirvk",
+      "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBhZDdkNTY3ZWQ3M2M2NTEzZWQ0ZTE0ZTc4OGRjZWU4NjZlMzY3ZDMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbW9iaWxlLXRyYWNrdGltZSIsImF1ZCI6Im1vYmlsZS10cmFja3RpbWUiLCJhdXRoX3RpbWUiOjE1NTI5NTQzNDQsInVzZXJfaWQiOiI1VGsyaDZxTm1qV0NUWlRvMmNxM0NRVmh4bDMzIiwic3ViIjoiNVRrMmg2cU5taldDVFpUbzJjcTNDUVZoeGwzMyIsImlhdCI6MTU1Mjk1NDM0NCwiZXhwIjoxNTUyOTU3OTQ0LCJlbWFpbCI6ImFobWVkLnR1eEBwcm90b25tYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJhaG1lZC50dXhAcHJvdG9ubWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.ibtAk_EweIw-GsirsI4HAqcuwdwqKUgj1UttYPeqGA4SX6LSRf5TcnPKi0Dick2crMDzXu_hCvgqeRXB4ycW2kXLu3GvBhUDrB9sA7UkrHbUtKtBV2TwDdukRxRZt9h_DWIFUmaE0vo_Mzv3NGcKw_fYYNaAXFiq2nbDpLmSq_N_7pdSxc1YPRXaCbzNaXFKCe-ybSdRdw2P9FWNEPGXvkk57nT5xYKtFgvB36YZuEdsk9Zri3fHxq8rdErxvp9-41KUEeCYO0WYKICGSr9Exv7gmVYdVe_waszfcq3Lsbt1tgOPRIQFUVXUGPQkWxbTNF6damd9KxAkHfdf94SmWA",
+      "expirationTime": 1552957944772
+    },
+    "redirectEventId": null,
+    "lastLoginAt": "1552954311307",
+    "createdAt": "1552951065390"
+  },
+  "credential": null,
+  "additionalUserInfo": { "providerId": "password", "isNewUser": false },
+  "operationType": "signIn"
+}
