@@ -1,4 +1,4 @@
-import initFirebase from "../initFirebase";
+import initFirebase from "../../initFirebase";
 
 const authenticate = (req, res) => {
   const { email, pass } = req.body;

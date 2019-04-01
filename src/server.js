@@ -3,7 +3,7 @@ import cors from "cors";
 import { json, urlencoded } from "body-parser";
 import router from "./routes/routes";
 
-import getUsers from "./controllers/getUsers";
+import getUsers from "./controllers/users/getUsers";
 
 // import initAdminFirebase from "./initAdminFirebase";
 // import initFirebase from "./initFirebase";
