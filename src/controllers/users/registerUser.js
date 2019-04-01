@@ -1,4 +1,4 @@
-import initAdminFirebase from "../initAdminFirebase";
+import initAdminFirebase from "../../initAdminFirebase";
 
 const registerUser = (req, res) => {
   const {first_name, last_name, email, pass} = req.body;
