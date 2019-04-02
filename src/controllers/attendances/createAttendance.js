@@ -3,6 +3,8 @@ import ATTENDANCES from "../../../db/tracktime-attendances.json";
 
 const createAttendance = (req, res) => {
 
+  console.log(req.body);
+
   ATTENDANCES.map(item => {
     initFirebase
     .firestore()

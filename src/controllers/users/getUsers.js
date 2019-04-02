@@ -3,6 +3,8 @@ import initFirebase from "../../initFirebase";
 const getUsers = (req, res) => {
   // console.log(initFirebase.firestore().collection("users").where("firstname", "==", "Ahmed"));
 
+  console.log();
+
   //Get single document
   // initFirebase
   //   .firestore()
