@@ -3,7 +3,7 @@ import initFirebase from "../../initFirebase";
 const getAttendances = (req, res) => {
   initFirebase
     .firestore()
-    .collection("attendances")
+    .collection("attendances").where("userId" , "==" , 2)
     .get()
     .then(snapshot => {
       let attendances = [];

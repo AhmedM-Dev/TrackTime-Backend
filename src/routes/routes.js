@@ -37,7 +37,7 @@ router.post("/tracktime/api/register", registerUser);
 
 // router.get("/tracktime/api/resume", getResume);
 
-// router.get("/tracktime/api/attendances", getAttendances);
+router.get("/tracktime/api/attendances", getAttendances);
 router.post("/tracktime/api/attendances", createAttendance);
 // router.put("/tracktime/api/attendances/:id", updateAttendance);
 
