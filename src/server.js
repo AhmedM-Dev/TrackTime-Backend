@@ -12,7 +12,7 @@ const PORT = process.env.PORT || process.argv[2] || 5000;
 
 const app = express();
 
-// app.use(cors());
+app.use(cors());
 
 app.use(json());
 app.use(urlencoded({extended: true}));
