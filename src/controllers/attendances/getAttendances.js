@@ -1,8 +1,10 @@
 import initFirebase from "../../initFirebase";
 
+
+
 const getAttendances = (req, res) => {
 
-  console.log(req.query);
+  console.log("[REQUEST] ", req.query);
   if (req.query.userId) {
     initFirebase
       .firestore()
@@ -11,7 +13,6 @@ const getAttendances = (req, res) => {
       .then(snapshot => {
         let attendances = [];
         snapshot.forEach(doc => {
-          console.log(doc.id, "=>", doc.data());
           attendances.push(doc.data())
         });
         return res.status(200).json({
