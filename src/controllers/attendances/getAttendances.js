@@ -8,12 +8,20 @@ const getAttendances = (req, res) => {
   if (req.query.userId) {
     initFirebase
       .firestore()
-      .collection("attendances").where("userId", "==", parseInt(req.query.userId))
+      .collection("attendances")
+      .where("userId", "==", parseInt(req.query.userId))
       .get()
       .then(snapshot => {
         let attendances = [];
         snapshot.forEach(doc => {
-          attendances.push(doc.data())
+          if (req.query.year) {
+            if (new Date(doc.data().date).getFullYear() === parseInt(req.query.year)) {
+              console.log("doc data:", doc.data());
+              attendances.push(doc.data());
+            } 
+          } else {
+            attendances.push(doc.data());
+          }
         });
         return res.status(200).json({
           attendances: attendances

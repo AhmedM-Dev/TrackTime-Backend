@@ -26,6 +26,8 @@ import updateTravel from "../controllers/travels/updateTravel";
 
 import getHistory from "../controllers/history/getHistory";
 
+import getNotifications from "../controllers/notifications/getNotifications";
+
 
 const router = express.Router();
 
@@ -49,10 +51,12 @@ router.post("/tracktime/api/requests", createRequest);
 // router.post("/tracktime/api/events", createEvent);
 // router.put("/tracktime/api/events/:id", updateEvent);
 
-// router.get("/tracktime/api/travels", getTravels);
-// router.post("/tracktime/api/travels", createTravel);
+router.get("/tracktime/api/travels", getTravels);
+router.post("/tracktime/api/travels", createTravel);
 // router.put("/tracktime/api/travels/:id", updateTravel);
 
 // router.get("/tracktime/api/history", getHistory);
+
+router.get("/tracktime/api/notifications", getNotifications);
 
 export default router;

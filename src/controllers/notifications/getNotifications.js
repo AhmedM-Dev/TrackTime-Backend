@@ -1,19 +1,19 @@
 import initFirebase from "../../initFirebase";
 
-const getTravels = (req, res) => {
+const getNotifications = (req, res) => {
   initFirebase
     .firestore()
-    .collection("travels")
-    .where("userId", "==", parseInt(req.query.userId))
+    .collection("notifications")
+    .where("targetUserId", "==", 2)
     .get()
     .then(snapshot => {
-      let travels = [];
+      let notifications = [];
       snapshot.forEach(doc => {
         console.log(doc.id, "=>", doc.data());
-        travels.push(doc.data());
+        notifications.push(doc.data());
       });
       return res.status(200).json({
-        travels: travels
+        notifications: notifications
       });
     })
     .catch(err => {
@@ -24,4 +24,4 @@ const getTravels = (req, res) => {
     });
 };
 
-export default getTravels;
+export default getNotifications;
