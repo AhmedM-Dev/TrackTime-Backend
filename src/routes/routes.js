@@ -50,7 +50,7 @@ router.post("/tracktime/api/requests", createRequest);
 // router.put("/tracktime/api/events/:id", updateEvent);
 
 // router.get("/tracktime/api/travels", getTravels);
-// router.post("/tracktime/api/travels", createTravel);
+router.post("/tracktime/api/travels", createTravel);
 // router.put("/tracktime/api/travels/:id", updateTravel);
 
 // router.get("/tracktime/api/history", getHistory);

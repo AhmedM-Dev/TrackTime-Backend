@@ -1,9 +1,6 @@
 import initFirebase from "../../initFirebase";
-
 const createRequest = (req, res) => {
-
     console.log(req.body);
-
     initFirebase
         .firestore()
         .collection("requests")
