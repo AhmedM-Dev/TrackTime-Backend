@@ -1,4 +1,5 @@
 import express from "express";
+import { MongoClient } from 'mongodb';
 
 import authenticate from "../controllers/authentication/authenticate";
 
@@ -30,6 +31,15 @@ import getNotifications from "../controllers/notifications/getNotifications";
 
 
 const router = express.Router();
+
+router.all('*', function (req, res, next) {
+    console.log('Connecting to db');
+    MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, db) {   //here db is the client obj
+        if (err) throw err;
+        req.db = db.db("TrackTime");
+        next();
+    });
+});
 
 router.post("/tracktime/api/auth", authenticate);
 
