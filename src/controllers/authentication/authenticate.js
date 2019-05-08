@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
-import config from "../../../config/secret.json";
+import config from "../../../config/config.json";
 
 // import initFirebase from "../../initFirebase";
 
@@ -9,31 +10,31 @@ const authenticate = ({ db, body }, res) => {
   const { email, pass } = body;
 
   db.collection('users').find({
-    username: "ahmed.m"
+    email
   }).toArray(function (err, result) {
-    if (err) throw err
-
-    console.log("result", result);
+    if (err) {
+      throw err;
+    }
 
     if (result[0]) {
       const { _id, ...user } = result[0];
 
-      const token = jwt.sign({ user }, config.secret, { expiresIn: '48h' });
-      const { password, ...userWithoutPassword } = user;
+      if (bcrypt.compareSync(pass, user.password)) {
+        const token = jwt.sign({ user }, config.secret, { expiresIn: '48h' });
+        const { password, ...userWithoutPassword } = user;
 
-      console.log('USER:', {
-        ...userWithoutPassword,
-        token
-      });
+        return res.status(200).json({
+          user: {
+            ...userWithoutPassword,
+            token
+          }
+        });
+      } else {
+        return res.status(400).json({ error: 'Wrong password.' });
+      }
 
-      return res.status(200).json({
-        user: {
-          ...userWithoutPassword,
-          token
-        }
-      });
     } else {
-      return res.status(400).json({ error: 'Username or password is incorrect' });
+      return res.status(400).json({ error: 'Unknown user.' });
     }
   });
 

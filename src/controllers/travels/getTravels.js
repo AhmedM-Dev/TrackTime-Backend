@@ -1,6 +1,9 @@
 import initFirebase from "../../initFirebase";
 
 const getTravels = (req, res) => {
+
+  console.log("headers", req.header('auth-token'));
+
   initFirebase
     .firestore()
     .collection("travels")

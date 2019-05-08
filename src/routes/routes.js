@@ -1,17 +1,21 @@
 import express from "express";
 import { MongoClient } from 'mongodb';
 
+import config from "../../config/config.json";
+
 import authenticate from "../controllers/authentication/authenticate";
 
 import getUsers from "../controllers/users/getUsers"
+import getAvatar from "../controllers/users/getAvatar.js";
 import registerUser from "../controllers/users/registerUser";
 import updateUser from "../controllers/users/updateUser";
 
-import getResume from "../controllers/dashboard/getResume";
+import getStats from "../controllers/dashboard/getStats";
 
 import getAttendances from "../controllers/attendances/getAttendances";
 import createAttendance from "../controllers/attendances/createAttendance";
 import updateAttendance from "../controllers/attendances/updateAttendance";
+import generateAttendances from "../controllers/attendances/generateAttendances.js";
 
 import getRequests from "../controllers/requests/getRequests";
 import createRequest from "../controllers/requests/createRequest";
@@ -33,10 +37,9 @@ import getNotifications from "../controllers/notifications/getNotifications";
 const router = express.Router();
 
 router.all('*', function (req, res, next) {
-    console.log('Connecting to db');
     MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, db) {   //here db is the client obj
         if (err) throw err;
-        req.db = db.db("TrackTime");
+        req.db = db.db(config.DATABASE);
         next();
     });
 });
@@ -44,14 +47,16 @@ router.all('*', function (req, res, next) {
 router.post("/tracktime/api/auth", authenticate);
 
 router.get("/tracktime/api/users", getUsers);
+router.get("/tracktime/api/avatar", getAvatar);
 router.post("/tracktime/api/register", registerUser);
 // router.put("/tracktime/api/register/:id", updateUser);
 
-// router.get("/tracktime/api/resume", getResume);
+router.get("/tracktime/api/stats", getStats);
 
 router.get("/tracktime/api/attendances", getAttendances);
 router.post("/tracktime/api/attendances", createAttendance);
 // router.put("/tracktime/api/attendances/:id", updateAttendance);
+router.patch("/tracktime/api/attendances", generateAttendances);
 
 // router.get("/tracktime/api/requests", getRequests);
 router.post("/tracktime/api/requests", createRequest);
