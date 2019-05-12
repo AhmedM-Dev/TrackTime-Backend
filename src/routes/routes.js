@@ -10,6 +10,11 @@ import getAvatar from "../controllers/users/getAvatar.js";
 import registerUser from "../controllers/users/registerUser";
 import updateUser from "../controllers/users/updateUser";
 
+import getGroups from "../controllers/groups/getGroups";
+import createGroup from "../controllers/groups/createGroup";
+// import updateGroup from "../controllers/groups/updateGroup";
+import deleteGroup from "../controllers/groups/deleteGroup";
+
 import getStats from "../controllers/dashboard/getStats";
 
 import getAttendances from "../controllers/attendances/getAttendances";
@@ -48,8 +53,14 @@ router.post("/tracktime/api/auth", authenticate);
 
 router.get("/tracktime/api/users", getUsers);
 router.get("/tracktime/api/avatar", getAvatar);
-router.post("/tracktime/api/register", registerUser);
-// router.put("/tracktime/api/register/:id", updateUser);
+router.post("/tracktime/api/users", registerUser);
+// router.put("/tracktime/api/users/:id", updateUser);
+// router.delete("/tracktime/api/users/:userId", deleteUser);
+
+router.get("/tracktime/api/groups", getGroups);
+router.post("/tracktime/api/groups", createGroup);
+// router.put("/tracktime/api/groups/:group_id", updateGroup);
+router.delete("/tracktime/api/groups/:group_id", deleteGroup);
 
 router.get("/tracktime/api/stats", getStats);
 

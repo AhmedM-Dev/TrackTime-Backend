@@ -1,30 +1,42 @@
-import initFirebase from "../../initFirebase";
+import jwt from "jsonwebtoken";
 
-const getTravels = (req, res) => {
+import config from "../../../config/config.json";
 
-  console.log("headers", req.header('auth-token'));
+const getTravels = ({ db }, res) => {
 
-  initFirebase
-    .firestore()
-    .collection("travels")
-    .where("userId", "==", parseInt(req.query.userId))
-    .get()
-    .then(snapshot => {
-      let travels = [];
-      snapshot.forEach(doc => {
-        console.log(doc.id, "=>", doc.data());
-        travels.push(doc.data());
-      });
-      return res.status(200).json({
-        travels: travels
-      });
-    })
-    .catch(err => {
-      console.log("Error getting documents", err);
+  jwt.verify(headers['auth-token'], config.secret, function (err, decoded) {
+    if (err) {
       return res.status(400).json({
-        error: err
+        error
       });
-    });
+    }
+
+    if (decoded) {
+      db.collection("travels").find({
+        userId: parseInt(decoded.user.userId)
+      }).toArray((error, result) => {
+        if (error) {
+          return res.status(500).json({
+            errorMessage: "Something went wrong."
+          });
+        }
+
+        if (result.length > 0) {
+          return res.status(200).json({
+            travels: result
+          });
+        } else {
+          return res.status(400).json({
+            errorMessage: "No data found."
+          });
+        }
+      });
+    } else {
+      return res.status(500).json({
+        errorMessage: "Invalid token."
+      });
+    }
+  });
 };
 
 export default getTravels;

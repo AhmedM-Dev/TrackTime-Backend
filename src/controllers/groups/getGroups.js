@@ -1,11 +1,8 @@
 import jwt from "jsonwebtoken";
-import { takeRight } from "lodash";
 
 import config from "../../../config/config.json";
 
-const getAttendances = ({ db, query, headers }, res) => {
-
-  console.log("[REQUEST] ", query);
+const getGroups = ({ db, headers }, res) => {
 
   jwt.verify(headers['auth-token'], config.secret, function (err, decoded) {
     if (err) {
@@ -15,9 +12,7 @@ const getAttendances = ({ db, query, headers }, res) => {
     }
 
     if (decoded) {
-      db.collection("attendances").find({
-        userId: parseInt(decoded.user.userId)
-      }).toArray((error, result) => {
+      db.collection("groups").find({}).toArray((error, result) => {
         if (error) {
           return res.status(500).json({
             errorMessage: "Something went wrong."
@@ -26,7 +21,7 @@ const getAttendances = ({ db, query, headers }, res) => {
 
         if (result.length > 0) {
           return res.status(200).json({
-            attendances: takeRight(result, 10)
+            groups: result
           });
         } else {
           return res.status(400).json({
@@ -42,4 +37,4 @@ const getAttendances = ({ db, query, headers }, res) => {
   });
 };
 
-export default getAttendances;
+export default getGroups;
