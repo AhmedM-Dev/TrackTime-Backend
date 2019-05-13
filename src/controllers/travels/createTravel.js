@@ -1,9 +1,17 @@
 import initFirebase from "../../initFirebase";
 
 const createTravel = ({ db, body }, res) => {
-    console.log(body);
+  console.log(body);
 
-    db.collection('travels').insertOne({
+  jwt.verify(headers['auth-token'], config.secret, function (err, decoded) {
+    if (err) {
+      return res.status(400).json({
+        error
+      });
+    }
+
+    if (decoded) {
+      db.collection('travels').insertOne({
         userId: body.userId,
         travelType: body.travelType,
         conductor: body.conductor,
@@ -13,19 +21,27 @@ const createTravel = ({ db, body }, res) => {
         endTime: body.endTime,
         type: body.type,
         destinationAdress: body.destinationAdress,
-    }, function (err, result) {
+      }, function (err, result) {
         if (err) {
-            console.log("An error occured.");
-            return res.status(400).json({
-                error: err
-            });
+          console.log("An error occured.");
+          return res.status(400).json({
+            error: err
+          });
         } else if (result) {
-            console.log("RESULT:", result);
-            return res.status(200).json({
-                result
-            });
+          console.log("RESULT:", result);
+          return res.status(200).json({
+            result
+          });
         }
-    });
+      });
+    } else {
+      return res.status(500).json({
+        errorMessage: "Invalid token."
+      });
+    }
+  });
+
+
 }
 
 export default createTravel;

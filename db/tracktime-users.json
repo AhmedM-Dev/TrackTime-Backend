@@ -6,7 +6,7 @@
     "last_name": "Jaggers",
     "username": "timoteo.jaggers",
     "email": "tjaggers0@china.com.cn",
-    "job_title": " Consultant",
+    "jobTitle": " Consultant",
     "group_id": 4
   },
   {
@@ -16,7 +16,7 @@
     "last_name": "Murray",
     "username": "kyla.murray",
     "email": "kmurray1@com.com",
-    "job_title": " Designer",
+    "jobTitle": " Designer",
     "group_id": 3
   },
   {
@@ -26,7 +26,7 @@
     "last_name": "Cello",
     "username": "charisse.cello",
     "email": "ccello2@etsy.com",
-    "job_title": " Marketing Agent",
+    "jobTitle": " Marketing Agent",
     "group_id": 1
   },
   {
@@ -36,7 +36,7 @@
     "last_name": "Crosham",
     "username": "massimiliano.crosham",
     "email": "mcrosham3@stumbleupon.com",
-    "job_title": " Business Analyst",
+    "jobTitle": " Business Analyst",
     "group_id": 14
   },
   {
@@ -46,7 +46,7 @@
     "last_name": "Cramb",
     "username": "wayne.cramb",
     "email": "wcramb4@com.com",
-    "job_title": " Consultant",
+    "jobTitle": " Consultant",
     "group_id": 4
   },
   {
@@ -56,7 +56,7 @@
     "last_name": "Lyons",
     "username": "lucho.lyons",
     "email": "llyons5@merriam-webster.com",
-    "job_title": " Designer",
+    "jobTitle": " Designer",
     "group_id": 3
   },
   {
@@ -66,7 +66,7 @@
     "last_name": "Janjusevic",
     "username": "hilly.janjusevic",
     "email": "hjanjusevic6@google.com",
-    "job_title": " Developer",
+    "jobTitle": " Developer",
     "group_id": 8
   },
   {
@@ -76,7 +76,7 @@
     "last_name": "Martinolli",
     "username": "aldon.martinolli",
     "email": "amartinolli7@usnews.com",
-    "job_title": " Business Analyst",
+    "jobTitle": " Business Analyst",
     "group_id": 7
   },
   {
@@ -86,7 +86,7 @@
     "last_name": "Sixsmith",
     "username": "deedee.sixsmith",
     "email": "dsixsmith8@biblegateway.com",
-    "job_title": " CEO",
+    "jobTitle": " CEO",
     "group_id": 12
   },
   {
@@ -96,7 +96,7 @@
     "last_name": "Colgan",
     "username": "kerrin.colgan",
     "email": "kcolgan9@deliciousdays.com",
-    "job_title": " Project Manager",
+    "jobTitle": " Project Manager",
     "group_id": 10
   },
   {
@@ -106,7 +106,7 @@
     "last_name": "Di Biasio",
     "username": "edouard.di biasio",
     "email": "edibiasioa@behance.net",
-    "job_title": " Developer",
+    "jobTitle": " Developer",
     "group_id": 6
   },
   {
@@ -116,7 +116,7 @@
     "last_name": "Clowsley",
     "username": "jolyn.clowsley",
     "email": "jclowsleyb@sun.com",
-    "job_title": " Consultant",
+    "jobTitle": " Consultant",
     "group_id": 8
   },
   {
@@ -126,7 +126,7 @@
     "last_name": "Chaffe",
     "username": "zulema.chaffe",
     "email": "zchaffec@va.gov",
-    "job_title": " Quality Assurance",
+    "jobTitle": " Quality Assurance",
     "group_id": 11
   },
   {
@@ -136,7 +136,7 @@
     "last_name": "Ivanonko",
     "username": "orlando.ivanonko",
     "email": "oivanonkod@google.nl",
-    "job_title": " Commercial",
+    "jobTitle": " Commercial",
     "group_id": 9
   },
   {
@@ -146,7 +146,7 @@
     "last_name": "Wallington",
     "username": "allyson.wallington",
     "email": "awallingtone@zimbio.com",
-    "job_title": " Support Developer",
+    "jobTitle": " Support Developer",
     "group_id": 1
   },
   {
@@ -156,7 +156,7 @@
     "last_name": "Hilliam",
     "username": "padget.hilliam",
     "email": "philliamf@aol.com",
-    "job_title": " Commercial",
+    "jobTitle": " Commercial",
     "group_id": 8
   },
   {
@@ -166,7 +166,7 @@
     "last_name": "Elves",
     "username": "bobbette.elves",
     "email": "belvesg@feedburner.com",
-    "job_title": " Developer",
+    "jobTitle": " Developer",
     "group_id": 4
   },
   {
@@ -176,7 +176,7 @@
     "last_name": "Bednell",
     "username": "zebulon.bednell",
     "email": "zbednellh@bbc.co.uk",
-    "job_title": " CEO",
+    "jobTitle": " CEO",
     "group_id": 9
   },
   {
@@ -186,7 +186,7 @@
     "last_name": "Towersey",
     "username": "flss.towersey",
     "email": "ftowerseyi@yolasite.com",
-    "job_title": " Pole Leader",
+    "jobTitle": " Pole Leader",
     "group_id": 11
   },
   {
@@ -196,7 +196,7 @@
     "last_name": "Jerok",
     "username": "fax.jerok",
     "email": "fjerokj@wired.com",
-    "job_title": " Developer",
+    "jobTitle": " Developer",
     "group_id": 1
   }
 ]

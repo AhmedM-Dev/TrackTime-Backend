@@ -5,6 +5,8 @@ import config from "../../../config/config.json";
 
 const registerUser = ({ db, body, headers }, res) => {
 
+  console.log('[CREATE USER] ', body);
+
   jwt.verify(headers['auth-token'], config.secret, function (err, decoded) {
     if (err) {
       return res.status(400).json({
@@ -40,8 +42,10 @@ const registerUser = ({ db, body, headers }, res) => {
               username: body.username,
               email: body.email,
               password: bcrypt.hashSync(body.password),
-              displayName: body.displayName,
-              job_title: body.job_title
+              displayName: `${body.firstName} ${body.lastName}`,
+              jobTitle: body.jobTitle,
+              phoneNumber: parseInt(body.phoneNumber),
+              groupId: parseInt(body.groupId)
             }, function (err, result) {
               if (err) {
                 console.log("An error occured.");
@@ -50,9 +54,20 @@ const registerUser = ({ db, body, headers }, res) => {
                 });
               } else if (result) {
                 console.log("RESULT:", result);
-                return res.status(200).json({
-                  result
-                });
+
+                db.collection("users").find({ email: body.email }).toArray((error, addedUser) => {
+                  if (error) {
+                    return res.status(500).json({
+                      errorMessage: "Something went wrong."
+                    });
+                  }
+
+                  if (addedUser) {
+                    return res.status(200).json({
+                      user: addedUser
+                    });
+                  }
+                })
               }
             });
 

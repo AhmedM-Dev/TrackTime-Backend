@@ -1,61 +1,40 @@
-import initFirebase from "../../initFirebase";
+import jwt from "jsonwebtoken";
 
-const getUsers = (req, res) => {
-  console.log("USERSID", req.query.email);
+import config from "../../../config/config.json";
 
-  // console.log(initFirebase.firestore().collection("users").where("firstname", "==", "Ahmed"));
+const getUsers = ({ db, headers }, res) => {
 
-  // Get single document
-  initFirebase
-    .firestore()
-    .collection("users").where("email" ,'==',req.query.email)
-    .get()
-    .then(snapshot => {
-      let users = [];
-      snapshot.forEach(doc => {
-        console.log(doc.id, "=>", doc.data());
-        users.push(doc.data())
+  jwt.verify(headers['auth-token'], config.secret, function (err, decoded) {
+    if (err) {
+      return res.status(400).json({
+        error
       });
-      return res.status(200).json({
-        user: users[0]
-      });
-      // if (!doc.exists) {
-      //   console.log("No such document!");
-      //   return res.status(400).json({
-      //     user: {}
-      //   });
-      // } else {
-      //   console.log("Document data:", doc.data());
-      //   return res.status(200).json({
-      //     user: doc.data()
-      //   });
-      // }
-    })
-    .catch(err => {
-      console.log("Error getting document", err);
-    });
+    }
 
-  //Get all documents in a collection
-  // initFirebase
-  //   .firestore()
-  //   .collection("users")
-  //   .get()
-  //   .then(snapshot => {
-  //     let users = [];
-  //     snapshot.forEach(doc => {
-  //       console.log(doc.id, "=>", doc.data());
-  //       users.push(doc.data())
-  //     });
-  //     return res.status(200).json({
-  //       users: users
-  //     });
-  //   })
-  //   .catch(err => {
-  //     console.log("Error getting documents", err);
-  //     res.status(400).json({
-  //       error: err
-  //     });
-  //   });
+    if (decoded) {
+      db.collection("users").find({}).toArray((error, result) => {
+        if (error) {
+          return res.status(500).json({
+            errorMessage: "Something went wrong."
+          });
+        }
+
+        if (result.length > 0) {
+          return res.status(200).json({
+            users: result
+          });
+        } else {
+          return res.status(400).json({
+            errorMessage: "No data found."
+          });
+        }
+      });
+    } else {
+      return res.status(500).json({
+        errorMessage: "Invalid token."
+      });
+    }
+  });
 };
 
 export default getUsers;

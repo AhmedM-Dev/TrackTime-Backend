@@ -26,13 +26,6 @@ const deleteGroup = ({ db, params, headers }, res) => {
           });
         }
       });
-
-      // try {
-      //   db.orders.deleteOne({ "group_id": { $lt: ISODate("2015-11-01T12:40:15Z") } });
-      // } catch (e) {
-      //   print(e);
-      // }
-
     } else {
       return res.status(500).json({
         errorMessage: "Invalid token."

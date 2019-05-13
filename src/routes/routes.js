@@ -9,6 +9,7 @@ import getUsers from "../controllers/users/getUsers"
 import getAvatar from "../controllers/users/getAvatar.js";
 import registerUser from "../controllers/users/registerUser";
 import updateUser from "../controllers/users/updateUser";
+import deleteUser from "../controllers/users/deleteUser";
 
 import getGroups from "../controllers/groups/getGroups";
 import createGroup from "../controllers/groups/createGroup";
@@ -55,7 +56,7 @@ router.get("/tracktime/api/users", getUsers);
 router.get("/tracktime/api/avatar", getAvatar);
 router.post("/tracktime/api/users", registerUser);
 // router.put("/tracktime/api/users/:id", updateUser);
-// router.delete("/tracktime/api/users/:userId", deleteUser);
+router.delete("/tracktime/api/users/:userId", deleteUser);
 
 router.get("/tracktime/api/groups", getGroups);
 router.post("/tracktime/api/groups", createGroup);
