@@ -25,12 +25,18 @@ const authenticate = ({ db, body }, res) => {
         const token = jwt.sign({ user }, config.secret, { expiresIn: '48h' });
         const { password, ...userWithoutPassword } = user;
 
-        return res.status(200).json({
-          user: {
-            ...userWithoutPassword,
-            token
+        jwt.verify(token, config.secret, (err, decoded) => {
+          if (decoded) {
+            return res.status(200).json({
+              user: {
+                ...userWithoutPassword,
+                token,
+                expires: decoded.exp
+              }
+            });
           }
         });
+
       } else {
         return res.status(400).json({ error: 'Wrong password.' });
       }
