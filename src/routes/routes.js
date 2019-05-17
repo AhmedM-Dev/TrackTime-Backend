@@ -1,5 +1,6 @@
 import express from "express";
 import { MongoClient } from 'mongodb';
+import jwt from "jsonwebtoken";
 
 import config from "../../config/config.json";
 
@@ -39,15 +40,47 @@ import getHistory from "../controllers/history/getHistory";
 
 import getNotifications from "../controllers/notifications/getNotifications";
 
+let database = null;
+MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, db) {   //here db is the client obj
+    if (err) {
+        console.error("Unable to connect to MongoDB database server at:", "localhost:27017");
+    } else {
+        database = db.db(config.DATABASE);
+    }
+});
 
 const router = express.Router();
 
 router.all('*', function (req, res, next) {
-    MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, db) {   //here db is the client obj
-        if (err) throw err;
-        req.db = db.db(config.DATABASE);
+    if (req.path === "/tracktime/api/auth") {
+        req.db = database;
         next();
-    });
+    } else {
+        if (database) {
+            jwt.verify(req.headers['auth-token'], config.secret, (err, decoded) => {
+                if (err) {
+                    return res.status(500).json({
+                        error: err
+                    });
+                }
+
+                if (decoded) {
+                    req.user = decoded.user;
+                    req.db = database;
+                    console.log('DECODED USER:', decoded);
+                    next();
+                } else {
+                    return res.status(501).json({
+                        errorMessage: "Invalid token."
+                    });
+                }
+            });
+        } else {
+            return res.status(500).json({
+                errorMessage: "Unable to connect to MongoDB database server at:" + " \"localhost:27017\""
+            });
+        }
+    }
 });
 
 router.post("/tracktime/api/auth", authenticate);

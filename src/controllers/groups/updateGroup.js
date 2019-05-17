@@ -1,0 +1,23 @@
+import jwt from "jsonwebtoken";
+
+import config from "../../../config/config.json";
+
+const updateGroup = ({ db, body }, res) => {
+  db.collection('groups').updateOne({
+    _id: body.group_id,
+    ...body
+  }, function (err, result) {
+    if (err) {
+      console.log("An error occured.");
+      return res.status(400).json({
+        error: err
+      });
+    } else if (result) {
+      return res.status(200).json({
+        result
+      });
+    }
+  });
+};
+
+export default updateGroup;

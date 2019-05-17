@@ -2,33 +2,18 @@ import jwt from "jsonwebtoken";
 
 import config from "../../../config/config.json";
 
-const deleteUser = ({ db, params, headers }, res) => {
-
-  jwt.verify(headers['auth-token'], config.secret, function (err, decoded) {
+const deleteUser = ({ db, params }, res) => {
+  db.collection('users').deleteOne({
+    userId: parseInt(params.userId)
+  }, function (err, result) {
     if (err) {
+      console.log("An error occured.");
       return res.status(400).json({
-        error
+        error: err
       });
-    }
-
-    if (decoded) {
-      db.collection('users').deleteOne({
-        userId: parseInt(params.userId)
-      }, function (err, result) {
-        if (err) {
-          console.log("An error occured.");
-          return res.status(400).json({
-            error: err
-          });
-        } else if (result) {
-          return res.status(200).json({
-            result
-          });
-        }
-      });
-    } else {
-      return res.status(500).json({
-        errorMessage: "Invalid token."
+    } else if (result) {
+      return res.status(200).json({
+        result
       });
     }
   });
