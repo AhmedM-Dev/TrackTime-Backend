@@ -42,45 +42,45 @@ import getNotifications from "../controllers/notifications/getNotifications";
 
 let database = null;
 MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, db) {   //here db is the client obj
-    if (err) {
-        console.error("Unable to connect to MongoDB database server at:", "localhost:27017");
-    } else {
-        database = db.db(config.DATABASE);
-    }
+  if (err) {
+    console.error("Unable to connect to MongoDB database server at:", "localhost:27017");
+  } else {
+    database = db.db(config.DATABASE);
+  }
 });
 
 const router = express.Router();
 
 router.all('*', function (req, res, next) {
-    if (req.path === "/tracktime/api/auth") {
-        req.db = database;
-        next();
-    } else {
-        if (database) {
-            jwt.verify(req.headers['auth-token'], config.secret, (err, decoded) => {
-                if (err) {
-                    return res.status(500).json({
-                        error: err
-                    });
-                }
-
-                if (decoded) {
-                    req.user = decoded.user;
-                    req.db = database;
-                    // console.log('DECODED USER:', decoded);
-                    next();
-                } else {
-                    return res.status(501).json({
-                        errorMessage: "Invalid token."
-                    });
-                }
-            });
-        } else {
-            return res.status(500).json({
-                errorMessage: "Unable to connect to MongoDB database server at:" + " \"localhost:27017\""
-            });
+  if (req.path === "/tracktime/api/auth") {
+    req.db = database;
+    next();
+  } else {
+    if (database) {
+      jwt.verify(req.headers['auth-token'], config.secret, (err, decoded) => {
+        if (err) {
+          return res.status(500).json({
+            error: err
+          });
         }
+
+        if (decoded) {
+          req.user = decoded.user;
+          req.db = database;
+          // console.log('DECODED USER:', decoded);
+          next();
+        } else {
+          return res.status(501).json({
+            errorMessage: "Invalid token."
+          });
+        }
+      });
+    } else {
+      return res.status(500).json({
+        errorMessage: "Unable to connect to MongoDB database server at:" + " \"localhost:27017\""
+      });
     }
+  }
 });
 
 router.post("/tracktime/api/auth", authenticate);
@@ -88,7 +88,7 @@ router.post("/tracktime/api/auth", authenticate);
 router.get("/tracktime/api/users", getUsers);
 router.get("/tracktime/api/avatar", getAvatar);
 router.post("/tracktime/api/users", registerUser);
-// router.put("/tracktime/api/users/:id", updateUser);
+router.put("/tracktime/api/users/:userId", updateUser);
 router.delete("/tracktime/api/users/:userId", deleteUser);
 
 router.get("/tracktime/api/groups", getGroups);
@@ -107,8 +107,8 @@ router.patch("/tracktime/api/attendances", generateAttendances);
 router.post("/tracktime/api/requests", createRequest);
 // router.put("/tracktime/api/requests/:id", updateRequest);
 
-// router.get("/tracktime/api/events", getEvents);
-// router.post("/tracktime/api/events", createEvent);
+router.get("/tracktime/api/events", getEvents);
+router.post("/tracktime/api/events", createEvent);
 // router.put("/tracktime/api/events/:id", updateEvent);
 
 router.get("/tracktime/api/travels", getTravels);

@@ -3,12 +3,12 @@ import { takeRight } from "lodash";
 
 import config from "../../../config/config.json";
 
-const getAttendances = ({ db, query, headers }, res) => {
+const getAttendances = ({ user, db, query }, res) => {
 
   console.log("[REQUEST] ", query);
 
   db.collection("attendances").find({
-    userId: parseInt(decoded.user.userId)
+    userId: parseInt(user.userId)
   }).toArray((error, result) => {
     if (error) {
       return res.status(500).json({

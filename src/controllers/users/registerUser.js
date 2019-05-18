@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import nodemailer from 'nodemailer';
 
 import config from "../../../config/config.json";
 
@@ -30,10 +31,11 @@ const registerUser = ({ db, body }, res) => {
 
         db.collection('users').insertOne({
           userId: result.length + 1,
-          username: body.username,
           email: body.email,
           password: bcrypt.hashSync(body.password),
           displayName: `${body.firstName} ${body.lastName}`,
+          firstName: body.firstName,
+          lastName: body.lastName,
           jobTitle: body.jobTitle,
           phoneNumber: parseInt(body.phoneNumber),
           groupId: parseInt(body.groupId)
@@ -53,9 +55,38 @@ const registerUser = ({ db, body }, res) => {
                 });
               }
 
+              var transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: 'ahmed.tux@gmail.com',
+                  pass: 'ahmed1989'
+                }
+              });
+
+              var mailOptions = {
+                from: 'tracktime@system.com',
+                to: addedUser[0].email,
+                subject: 'Registration',
+                text: `
+                Welcome to TrackTime\n
+                
+                Your credentials: \n
+                  identifier: ${addedUser[0].email}\n
+                  pass: ${body.password}
+                `
+              };
+
+              transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+
               if (addedUser) {
                 return res.status(200).json({
-                  user: addedUser
+                  user: addedUser[0]
                 });
               }
             })

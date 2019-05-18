@@ -1,7 +1,3 @@
-import jwt from "jsonwebtoken";
-
-import config from "../../../config/config.json";
-
 const createGroup = ({ db, body }, res) => {
   db.collection('groups').insertOne({
     _id: body.group_id,

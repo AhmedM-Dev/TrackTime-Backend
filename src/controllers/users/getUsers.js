@@ -11,6 +11,30 @@ const getUsers = ({ db }, res) => {
     }
 
     if (result.length > 0) {
+
+      var users = [];
+
+      result.map(user => {
+
+        console.log("user", user);
+
+        db.collection("avatars").find({ userId: user.userId }).toArray((error, avatar) => {
+          if (error) {
+            return res.status(500).json({
+              errorMessage: "Something went wrong."
+            });
+          }
+
+          users.push({
+            ...user,
+            photo: avatar[0] && avatar[0].photo ? avatar[0].photo : ""
+          });
+
+        });
+      });
+
+      console.log("USERS", users);
+
       return res.status(200).json({
         users: result
       });
