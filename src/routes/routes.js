@@ -14,7 +14,7 @@ import deleteUser from "../controllers/users/deleteUser";
 
 import getGroups from "../controllers/groups/getGroups";
 import createGroup from "../controllers/groups/createGroup";
-// import updateGroup from "../controllers/groups/updateGroup";
+import updateGroup from "../controllers/groups/updateGroup";
 import deleteGroup from "../controllers/groups/deleteGroup";
 
 import getStats from "../controllers/dashboard/getStats";
@@ -67,7 +67,7 @@ router.all('*', function (req, res, next) {
                 if (decoded) {
                     req.user = decoded.user;
                     req.db = database;
-                    console.log('DECODED USER:', decoded);
+                    // console.log('DECODED USER:', decoded);
                     next();
                 } else {
                     return res.status(501).json({
@@ -93,8 +93,8 @@ router.delete("/tracktime/api/users/:userId", deleteUser);
 
 router.get("/tracktime/api/groups", getGroups);
 router.post("/tracktime/api/groups", createGroup);
-// router.put("/tracktime/api/groups/:group_id", updateGroup);
-router.delete("/tracktime/api/groups/:group_id", deleteGroup);
+router.put("/tracktime/api/groups/:groupId", updateGroup);
+router.delete("/tracktime/api/groups/:groupId", deleteGroup);
 
 router.get("/tracktime/api/stats", getStats);
 

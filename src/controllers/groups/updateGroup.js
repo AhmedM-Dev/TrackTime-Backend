@@ -1,11 +1,11 @@
-import jwt from "jsonwebtoken";
+const updateGroup = ({ db, body, params }, res) => {
+  console.log('updating:', params);
 
-import config from "../../../config/config.json";
-
-const updateGroup = ({ db, body }, res) => {
-  db.collection('groups').updateOne({
-    _id: body.group_id,
-    ...body
+  db.collection('groups').updateOne({ _id: parseInt(params.groupId) }, {
+    $set:
+    {
+      name: body.name
+    }
   }, function (err, result) {
     if (err) {
       console.log("An error occured.");
@@ -13,9 +13,29 @@ const updateGroup = ({ db, body }, res) => {
         error: err
       });
     } else if (result) {
-      return res.status(200).json({
-        result
-      });
+
+      if (JSON.parse(result).nModified > 0) {
+        db.collection('groups').find({
+          groupId: parseInt(params.groupId)
+        }).toArray((error, result) => {
+          if (error) {
+            console.log("An error occured.");
+            return res.status(400).json({
+              error
+            });
+          } else {
+            console.log('result ===>', result[0]);
+
+            return res.status(200).json({
+              group: result[0]
+            }); 
+          }
+        })
+      } else {
+        return res.status(200).json({
+          info: "Nothing to update."
+        });
+      }
     }
   });
 };
