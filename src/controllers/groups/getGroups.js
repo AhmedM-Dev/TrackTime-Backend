@@ -1,8 +1,4 @@
-import jwt from "jsonwebtoken";
-
-import config from "../../../config/config.json";
-
-const getGroups = ({ db, headers }, res) => {
+const getGroups = ({ db }, res) => {
   db.collection("groups").find({}).toArray((error, result) => {
     if (error) {
       return res.status(500).json({
