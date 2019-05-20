@@ -2,9 +2,9 @@ import jwt from "jsonwebtoken";
 
 import config from "../../../config/config.json";
 
-const deleteGroup = ({ db, params }, res) => {
-  db.collection('groups').deleteOne({
-    groupId: parseInt(params.groupId)
+const deleteEvent = ({ db, params }, res) => {
+  db.collection('events').deleteOne({
+    eventId: parseInt(params.eventId)
   }, function (err, result) {
     if (err) {
       console.log("An error occured.");
@@ -19,4 +19,4 @@ const deleteGroup = ({ db, params }, res) => {
   });
 };
 
-export default deleteGroup;
+export default deleteEvent;

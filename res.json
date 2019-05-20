@@ -5,7 +5,6 @@
     "photoURL": null,
     "email": "ahmed.tux@protonmail.com",
     "emailVerified": false,
-    "phoneNumber": null,
     "isAnonymous": false,
     "providerData": [
       {
@@ -13,7 +12,6 @@
         "displayName": null,
         "photoURL": null,
         "email": "ahmed.tux@protonmail.com",
-        "phoneNumber": null,
         "providerId": "password"
       }
     ],

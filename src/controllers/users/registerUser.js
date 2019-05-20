@@ -19,7 +19,7 @@ const registerUser = ({ db, body }, res) => {
 
     if (result.length > 0) {
       return res.status(500).json({
-        errorMessage: "A user with this email already exist."
+        errorMessage: "Email already used"
       });
     } else {
       db.collection("users").find({}).toArray((error, result) => {
@@ -37,8 +37,7 @@ const registerUser = ({ db, body }, res) => {
           firstName: body.firstName,
           lastName: body.lastName,
           jobTitle: body.jobTitle,
-          phoneNumber: parseInt(body.phoneNumber),
-          groupId: parseInt(body.groupId)
+          groupId: body.group,
         }, function (err, result) {
           if (err) {
             console.log("An error occured.");

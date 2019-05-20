@@ -1,26 +1,25 @@
-import initFirebase from "../../initFirebase";
+import jwt from "jsonwebtoken";
 
-const getEvents = (req, res) => {
-  initFirebase
-    .firestore()
-    .collection("events")
-    .get()
-    .then(snapshot => {
-      let events = [];
-      snapshot.forEach(doc => {
-        console.log(doc.id, "=>", doc.data());
-        events.push(doc.data())
+import config from "../../../config/config.json";
+
+const getevents = ({ db, headers }, res) => {
+  db.collection("events").find({}).toArray((error, result) => {
+    if (error) {
+      return res.status(500).json({
+        errorMessage: "Something went wrong."
       });
+    }
+
+    if (result.length > 0) {
       return res.status(200).json({
-        events: events
+        events: result
       });
-    })
-    .catch(err => {
-      console.log("Error getting documents", err);
-      res.status(400).json({
-        error: err
+    } else {
+      return res.status(400).json({
+        errorMessage: "No data found."
       });
-    });
+    }
+  });
 };
 
-export default getEvents;
+export default getevents;
