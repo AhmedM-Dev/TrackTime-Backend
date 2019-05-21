@@ -31,7 +31,7 @@ const getUsers = ({ db }, res) => {
       console.log("USERS", users);
 
       return res.status(200).json({
-        users: result
+        users: result.filter(user => user.userId !== 0)
       });
     } else {
       return res.status(400).json({

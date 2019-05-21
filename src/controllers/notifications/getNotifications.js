@@ -1,27 +1,24 @@
-import initFirebase from "../../initFirebase";
+const getNotifications = ({ user, db }, res) => {
+  db.collection("notifications").find({}).toArray((error, result) => {
+    if (error) {
+      return res.status(500).json({
+        errorMessage: "Something went wrong."
+      });
+    }
 
-const getNotifications = (req, res) => {
-  initFirebase
-    .firestore()
-    .collection("notifications")
-    .where("targetUserId", "==", 2)
-    .get()
-    .then(snapshot => {
-      let notifications = [];
-      snapshot.forEach(doc => {
-        console.log(doc.id, "=>", doc.data());
-        notifications.push(doc.data());
-      });
+    if (result.length > 0) {
+
+      console.log("Notifications:", result.filter(notif => notif.userId === user.userId || notif.toAll));
+
       return res.status(200).json({
-        notifications: notifications
+        notifications: result.filter(notif => notif.userId === user.userId || notif.toAll)
       });
-    })
-    .catch(err => {
-      console.log("Error getting documents", err);
+    } else {
       return res.status(400).json({
-        error: err
+        errorMessage: "No data found."
       });
-    });
+    }
+  });
 };
 
 export default getNotifications;
