@@ -1,6 +1,4 @@
-import jwt from "jsonwebtoken";
-
-import config from "../../../config/config.json";
+let users = [];
 
 const getUsers = ({ db }, res) => {
   db.collection("users").find({}).toArray((error, result) => {
@@ -11,9 +9,6 @@ const getUsers = ({ db }, res) => {
     }
 
     if (result.length > 0) {
-
-      var users = [];
-
       result.map(user => {
 
         console.log("user", user);

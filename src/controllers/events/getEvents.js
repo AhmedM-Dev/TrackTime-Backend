@@ -1,8 +1,4 @@
-import jwt from "jsonwebtoken";
-
-import config from "../../../config/config.json";
-
-const getevents = ({ db, headers }, res) => {
+const getEvents = ({ db }, res) => {
   db.collection("events").find({}).toArray((error, result) => {
     if (error) {
       return res.status(500).json({
@@ -22,4 +18,4 @@ const getevents = ({ db, headers }, res) => {
   });
 };
 
-export default getevents;
+export default getEvents;

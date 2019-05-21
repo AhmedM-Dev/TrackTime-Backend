@@ -1,7 +1,3 @@
-import jwt from "jsonwebtoken";
-
-import config from "../../../config/config.json";
-
 const deleteEvent = ({ db, params }, res) => {
   db.collection('events').deleteOne({
     eventId: parseInt(params.eventId)

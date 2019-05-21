@@ -31,6 +31,7 @@ import updateRequest from "../controllers/requests/updateRequest";
 import getEvents from "../controllers/events/getEvents";
 import createEvent from "../controllers/events/createEvent";
 import updateEvent from "../controllers/events/updateEvent";
+import deleteEvent from "../controllers/events/deleteEvent";
 
 import getTravels from "../controllers/travels/getTravels";
 import createTravel from "../controllers/travels/createTravel";
@@ -109,7 +110,8 @@ router.post("/tracktime/api/requests", createRequest);
 
 router.get("/tracktime/api/events", getEvents);
 router.post("/tracktime/api/events", createEvent);
-// router.put("/tracktime/api/events/:id", updateEvent);
+router.put("/tracktime/api/events/:id", updateEvent);
+router.delete("/tracktime/api/events/:id", deleteEvent);
 
 router.get("/tracktime/api/travels", getTravels);
 router.post("/tracktime/api/travels", createTravel);
