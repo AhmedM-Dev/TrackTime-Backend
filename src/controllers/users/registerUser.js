@@ -37,7 +37,7 @@ const registerUser = ({ db, body }, res) => {
           firstName: body.firstName,
           lastName: body.lastName,
           jobTitle: body.jobTitle,
-          groupId: body.group,
+          group: body.group,
         }, function (err, result) {
           if (err) {
             console.log("An error occured.");
