@@ -8,7 +8,7 @@ const getNotifications = ({ user, db }, res) => {
 
     if (result.length > 0) {
 
-      console.log("Notifications:", result.filter(notif => notif.userId === user.userId || notif.toAll));
+      // console.log("Notifications:", result.filter(notif => notif.userId === user.userId || notif.toAll));
 
       return res.status(200).json({
         notifications: result.filter(notif => notif.userId === user.userId || notif.toAll)

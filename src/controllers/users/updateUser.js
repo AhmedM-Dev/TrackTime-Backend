@@ -2,10 +2,12 @@ const updateUser = ({ db, body, params }, res) => {
   console.log('updating:', params);
 
   db.collection('users').updateOne(
-    { _id: parseInt(params.userId) },
+    { userId: parseInt(params.userId) },
     { $set: { ...body } },
 
     function (err, result) {
+      console.log("RRRR", result);
+
       if (err) {
         console.log("An error occured.");
         return res.status(400).json({

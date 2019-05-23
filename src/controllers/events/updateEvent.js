@@ -2,7 +2,7 @@ const updateTravel = ({ db, body, params }, res) => {
     console.log('updating:', params);
   
     db.collection('events').updateOne(
-      { _id: parseInt(params.eventId) },
+      { eventId: parseInt(params.eventId) },
       { $set: { ...body } },
   
       function (err, result) {
