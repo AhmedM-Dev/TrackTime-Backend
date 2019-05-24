@@ -1,7 +1,7 @@
 const updateAttendance = ({ db, body, params }, res) => {
   console.log('updating:', params);
 
-  db.collection('groups').updateOne({ _id: parseInt(params.groupId) }, {
+  db.collection('groups').updateOne({ groupId: params.groupId }, {
     $set:
     {
       name: body.name

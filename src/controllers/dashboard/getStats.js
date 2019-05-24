@@ -1,8 +1,3 @@
-import jwt from "jsonwebtoken";
-import { filter } from "lodash";
-
-import config from "../../../config/config.json";
-
 import getHoursDelays from "../../utils/getHoursDelays";
 
 // import initFirebase from "../../initFirebase";
@@ -54,7 +49,7 @@ const getStats = ({ user, db, query }, res) => {
   console.log("[REQUEST] ", query);
 
   db.collection("attendances").find({
-    userId: parseInt(user.userId)
+    userId: user.userId
   }).toArray((error, result) => {
     if (error) {
       return res.status(500).json({

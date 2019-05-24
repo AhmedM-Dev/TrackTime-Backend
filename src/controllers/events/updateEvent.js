@@ -2,7 +2,7 @@ const updateTravel = ({ db, body, params }, res) => {
     console.log('updating:', params);
   
     db.collection('events').updateOne(
-      { eventId: parseInt(params.eventId) },
+      { eventId: params.eventId },
       { $set: { ...body } },
   
       function (err, result) {
@@ -15,7 +15,7 @@ const updateTravel = ({ db, body, params }, res) => {
   
           if (JSON.parse(result).nModified > 0) {
             db.collection('events').find({
-                eventId: parseInt(params.eventId)
+                eventId: params.eventId
             }).toArray((error, result) => {
               if (error) {
                 console.log("An error occured.");

@@ -1,22 +1,4 @@
-// const createGroup = ({ db, body }, res) => {
-//   db.collection('groups').insertOne({
-//     _id: body.group_id,
-//     ...body
-//   }, function (err, result) {
-//     if (err) {
-//       console.log("An error occured.");
-//       return res.status(400).json({
-//         error: err
-//       });
-//     } else if (result) {
-//       return res.status(200).json({
-//         result
-//       });
-//     }
-//   });
-// };
-
-// export default createGroup;
+import uuid from 'uuid/v1';
 
 const createGroup = ({ db, body }, res) => {
 
@@ -37,7 +19,7 @@ const createGroup = ({ db, body }, res) => {
       });
     } else {
       db.collection('groups').insertOne({
-        groupId: result.length + 1,
+        groupId: uuid(),
         name: body.name,
         poleLead: body.poleLead
       }, function (err, result) {

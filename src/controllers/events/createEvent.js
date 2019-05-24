@@ -1,5 +1,8 @@
+import uuid from 'uuid/v1';
+
 const createEvent = ({ db, body }, res) => {
   db.collection('events').insertOne({
+    eventId: uuid(),
     ...body
   }, function (err, result) {
     if (err) {
@@ -10,6 +13,7 @@ const createEvent = ({ db, body }, res) => {
     } else if (result) {
 
       db.collection('notifications').insertOne({
+        notifId: uuid(),
         title: body.title,
         category: 'EVENT',
         toAll: true

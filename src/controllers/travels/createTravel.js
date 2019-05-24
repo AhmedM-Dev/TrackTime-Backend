@@ -1,8 +1,9 @@
-import initFirebase from "../../initFirebase";
+import uuid from 'uuid/v1';
 
 const createTravel = ({ db, body }, res) => {
   console.log(body);
   db.collection('travels').insertOne({
+    travelId: uuid(),
     userId: body.userId,
     travelType: body.travelType,
     conductor: body.conductor,

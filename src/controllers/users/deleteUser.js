@@ -4,7 +4,7 @@ import config from "../../../config/config.json";
 
 const deleteUser = ({ db, params }, res) => {
   db.collection('users').deleteOne({
-    userId: parseInt(params.userId)
+    userId: params.userId
   }, function (err, result) {
     if (err) {
       console.log("An error occured.");

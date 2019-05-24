@@ -2,7 +2,7 @@ const updateGroup = ({ db, body, params }, res) => {
   console.log('updating:', params);
 
   db.collection('groups').updateOne(
-    { _id: parseInt(params.groupId) },
+    { groupId: params.groupId },
     { $set: { ...body } },
     function (err, result) {
       if (err) {
@@ -14,7 +14,7 @@ const updateGroup = ({ db, body, params }, res) => {
 
         if (JSON.parse(result).nModified > 0) {
           db.collection('groups').find({
-            groupId: parseInt(params.groupId)
+            groupId: params.groupId
           }).toArray((error, result) => {
             if (error) {
               console.log("An error occured.");

@@ -11,6 +11,7 @@ import getAvatar from "../controllers/users/getAvatar.js";
 import registerUser from "../controllers/users/registerUser";
 import updateUser from "../controllers/users/updateUser";
 import deleteUser from "../controllers/users/deleteUser";
+import generateUsers from "../controllers/users/generateUsers";
 
 import getGroups from "../controllers/groups/getGroups";
 import createGroup from "../controllers/groups/createGroup";
@@ -20,7 +21,7 @@ import deleteGroup from "../controllers/groups/deleteGroup";
 import getStats from "../controllers/dashboard/getStats";
 
 import getAttendances from "../controllers/attendances/getAttendances";
-import createAttendance from "../controllers/attendances/createAttendance";
+// import createAttendance from "../controllers/attendances/createAttendance";
 import updateAttendance from "../controllers/attendances/updateAttendance";
 import generateAttendances from "../controllers/attendances/generateAttendances.js";
 
@@ -91,6 +92,7 @@ router.get("/tracktime/api/avatar", getAvatar);
 router.post("/tracktime/api/users", registerUser);
 router.put("/tracktime/api/users/:userId", updateUser);
 router.delete("/tracktime/api/users/:userId", deleteUser);
+router.patch("/tracktime/api/users", generateUsers);
 
 router.get("/tracktime/api/groups", getGroups);
 router.post("/tracktime/api/groups", createGroup);
@@ -100,7 +102,7 @@ router.delete("/tracktime/api/groups/:groupId", deleteGroup);
 router.get("/tracktime/api/stats", getStats);
 
 router.get("/tracktime/api/attendances", getAttendances);
-router.post("/tracktime/api/attendances", createAttendance);
+// router.post("/tracktime/api/attendances", createAttendance);
 // router.put("/tracktime/api/attendances/:id", updateAttendance);
 router.patch("/tracktime/api/attendances", generateAttendances);
 

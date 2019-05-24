@@ -2,7 +2,7 @@ const updateUser = ({ db, body, params }, res) => {
   console.log('updating:', params);
 
   db.collection('users').updateOne(
-    { userId: parseInt(params.userId) },
+    { userId: params.userId },
     { $set: { ...body } },
 
     function (err, result) {
@@ -17,7 +17,7 @@ const updateUser = ({ db, body, params }, res) => {
 
         if (JSON.parse(result).nModified > 0) {
           db.collection('users').find({
-            userId: parseInt(params.userId)
+            userId: params.userId
           }).toArray((error, result) => {
             if (error) {
               console.log("An error occured.");

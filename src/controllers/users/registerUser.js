@@ -1,8 +1,6 @@
-import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import nodemailer from 'nodemailer';
-
-import config from "../../../config/config.json";
+import uuid from 'uuid/v1';
 
 const registerUser = ({ db, body }, res) => {
 
@@ -30,7 +28,7 @@ const registerUser = ({ db, body }, res) => {
         }
 
         db.collection('users').insertOne({
-          userId: result.length + 1,
+          userId: uuid(),
           email: body.email,
           password: bcrypt.hashSync(body.password),
           displayName: `${body.firstName} ${body.lastName}`,

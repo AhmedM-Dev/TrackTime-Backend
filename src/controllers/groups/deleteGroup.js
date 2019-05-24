@@ -1,10 +1,6 @@
-import jwt from "jsonwebtoken";
-
-import config from "../../../config/config.json";
-
 const deleteGroup = ({ db, params }, res) => {
   db.collection('groups').deleteOne({
-    groupId: parseInt(params.groupId)
+    groupId: params.groupId
   }, function (err, result) {
     if (err) {
       console.log("An error occured.");
