@@ -17,8 +17,11 @@ import getGroups from "../controllers/groups/getGroups";
 import createGroup from "../controllers/groups/createGroup";
 import updateGroup from "../controllers/groups/updateGroup";
 import deleteGroup from "../controllers/groups/deleteGroup";
+import generateGroups from "../controllers/groups/generateGroups";
 
 import getStats from "../controllers/dashboard/getStats";
+
+import getCalendarData from "../controllers/calendar/getCalendarData";
 
 import getAttendances from "../controllers/attendances/getAttendances";
 // import createAttendance from "../controllers/attendances/createAttendance";
@@ -88,18 +91,21 @@ router.all('*', function (req, res, next) {
 router.post("/tracktime/api/auth", authenticate);
 
 router.get("/tracktime/api/users", getUsers);
-router.get("/tracktime/api/avatar", getAvatar);
 router.post("/tracktime/api/users", registerUser);
 router.put("/tracktime/api/users/:userId", updateUser);
 router.delete("/tracktime/api/users/:userId", deleteUser);
 router.patch("/tracktime/api/users", generateUsers);
+router.get("/tracktime/api/avatar", getAvatar);
 
 router.get("/tracktime/api/groups", getGroups);
 router.post("/tracktime/api/groups", createGroup);
 router.put("/tracktime/api/groups/:groupId", updateGroup);
 router.delete("/tracktime/api/groups/:groupId", deleteGroup);
+router.patch("/tracktime/api/groups", generateGroups);
 
 router.get("/tracktime/api/stats", getStats);
+
+router.get("/tracktime/api/calendar", getCalendarData);
 
 router.get("/tracktime/api/attendances", getAttendances);
 // router.post("/tracktime/api/attendances", createAttendance);

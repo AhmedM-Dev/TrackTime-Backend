@@ -10,9 +10,6 @@ const getUsers = ({ db }, res) => {
 
     if (result.length > 0) {
       result.map(user => {
-
-        console.log("user", user);
-
         db.collection("avatars").find({ userId: user.userId }).toArray((error, avatar) => {
           if (error) {
             return res.status(500).json({
@@ -31,7 +28,7 @@ const getUsers = ({ db }, res) => {
       console.log("USERS", users);
 
       return res.status(200).json({
-        users: result.filter(user => user.userId !== 0)
+        users: result.filter(user => user.businessRole !== 'CEO' && user.businessRole !== 'ADMIN')
       });
     } else {
       return res.status(400).json({
