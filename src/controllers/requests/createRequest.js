@@ -1,52 +1,48 @@
-import initFirebase from "../../initFirebase";
+import uuid from 'uuid/v1';
 
-const createRequest = (req, res) => {
+const createRequest = ({ user, db, body }, res) => {
+  db.collection('requests').insertOne({
+    requestId: uuid(),
+    ...body,
+    status: "pending"
+  }, function (err, result) {
+    if (err) {
+      console.log("An error occured.");
+      return res.status(400).json({
+        error: err
+      });
+    } else if (result) {
 
-    console.log(req.body);
+      db.collection("groups").findOne({ groupId: user.groupId }, (error, userGroup) => {
+        if (error) {
+          return res.status(500).json({
+            errorMessage: "Something went wrong."
+          });
+        }
 
-    initFirebase
-        .firestore()
-        .collection("requests")
-        .add({
-            userId: req.body.userId,
-            startDate: req.body.startDate,
-            startTime: req.body.startTime,
-            endDate: req.body.endDate,
-            endTime: req.body.endTime,
-            category: req.body.category,
-            motif: req.body.motif
-        })
-        .then(ref => {
-            console.log('Added document with ID: ', ref.id);
-        })
-        .catch(err => {
-            console.log("Error creating documents", err);
-            res.status(400).json({
+        if (userGroup) {
+          db.collection('notifications').insertOne({
+            notifId: uuid(),
+            title: `${user.firstName} ${user.lastName} has requested a ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
+            content: `${user.firstName} ${user.lastName} has requested a ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.\n\n${body.motif}`,
+            category: body.requestCategory,
+            targetUser: userGroup.poleLead,
+            vues: []
+          }, (err, result) => {
+            if (err) {
+              return res.status(500).json({
                 error: err
-            });
-        });
-
-    initFirebase
-        .firestore()
-        .collection("notifications")
-        .add({
-            userId: req.body.userId,
-            startDate: req.body.startDate,
-            startTime: req.body.startTime,
-            endDate: req.body.endDate,
-            endTime: req.body.endTime,
-            category: req.body.category,
-            motif: req.body.motif
-        })
-        .then(ref => {
-            console.log('Added document with ID: ', ref.id);
-        })
-        .catch(err => {
-            console.log("Error creating documents", err);
-            res.status(400).json({
-                error: err
-            });
-        });
-}
+              });
+            } else if (result) {
+              return res.status(200).json({
+                message: "Request created successfully."
+              });
+            }
+          });
+        }
+      })
+    }
+  });
+};
 
 export default createRequest;

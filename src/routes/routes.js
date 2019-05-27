@@ -30,7 +30,7 @@ import generateAttendances from "../controllers/attendances/generateAttendances.
 
 import getRequests from "../controllers/requests/getRequests";
 import createRequest from "../controllers/requests/createRequest";
-import updateRequest from "../controllers/requests/updateRequest";
+import editRequest from "../controllers/requests/editRequest";
 
 import getEvents from "../controllers/events/getEvents";
 import createEvent from "../controllers/events/createEvent";
@@ -44,6 +44,7 @@ import updateTravel from "../controllers/travels/updateTravel";
 import getHistory from "../controllers/history/getHistory";
 
 import getNotifications from "../controllers/notifications/getNotifications";
+import vueNotification from "../controllers/notifications/vueNotification";
 
 let database = null;
 MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, db) {   //here db is the client obj
@@ -114,7 +115,7 @@ router.patch("/tracktime/api/attendances", generateAttendances);
 
 // router.get("/tracktime/api/requests", getRequests);
 router.post("/tracktime/api/requests", createRequest);
-// router.put("/tracktime/api/requests/:id", updateRequest);
+// router.patch("/tracktime/api/requests/:id", editRequest);
 
 router.get("/tracktime/api/events", getEvents);
 router.post("/tracktime/api/events", createEvent);
@@ -128,5 +129,6 @@ router.post("/tracktime/api/travels", createTravel);
 // router.get("/tracktime/api/history", getHistory);
 
 router.get("/tracktime/api/notifications", getNotifications);
+router.put("/tracktime/api/notifications/:notifId", vueNotification);
 
 export default router;
