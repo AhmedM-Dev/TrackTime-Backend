@@ -1,34 +1,39 @@
-let users = [];
-
 const getUsers = ({ db }, res) => {
-  db.collection("users").find({}).toArray((error, result) => {
+
+  db.collection("users").aggregate([
+    {
+      $lookup: {
+        from: "avatars",
+        localField: "userId",    // field in the users collection
+        foreignField: "userId",  // field in the avatars collection
+        as: "avatar"
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        userId: 1,
+        firstName: 1,
+        lastName: 1,
+        email: 1,
+        jobTitle: 1,
+        businessRole: 1,
+        groupId: 1,
+        password: 1,
+        photo: { $arrayElemAt: ["$avatar.photo", 0] }
+      }
+    },
+    // { $out: "combined" }
+  ]).toArray((error, result) => {
     if (error) {
       return res.status(500).json({
-        errorMessage: "Something went wrong."
+        error
       });
     }
 
     if (result.length > 0) {
-      result.map(user => {
-        db.collection("avatars").find({ userId: user.userId }).toArray((error, avatar) => {
-          if (error) {
-            return res.status(500).json({
-              errorMessage: "Something went wrong."
-            });
-          }
-
-          users.push({
-            ...user,
-            photo: avatar[0] && avatar[0].photo ? avatar[0].photo : ""
-          });
-
-        });
-      });
-
-      console.log("USERS", users);
-
       return res.status(200).json({
-        users: result.filter(user => user.businessRole !== 'CEO' && user.businessRole !== 'ADMIN')
+        users: result
       });
     } else {
       return res.status(400).json({

@@ -1,4 +1,7 @@
 import uuid from 'uuid/v1';
+import { toLower } from 'lodash';
+
+const vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
 
 const createRequest = ({ user, db, body }, res) => {
   db.collection('requests').insertOne({
@@ -13,20 +16,20 @@ const createRequest = ({ user, db, body }, res) => {
       });
     } else if (result) {
 
-      db.collection("groups").findOne({ groupId: user.groupId }, (error, userGroup) => {
-        if (error) {
-          return res.status(500).json({
-            errorMessage: "Something went wrong."
-          });
-        }
+      if (user.businessRole === 'CEO' || user.businessRole === 'ADMIN') {
+        db.collection("users").findOne({ businessRole: 'CEO' }, (error, ceo) => {
+          if (error) {
+            return res.status(500).json({
+              errorMessage: "Something went wrong."
+            });
+          }
 
-        if (userGroup) {
           db.collection('notifications').insertOne({
             notifId: uuid(),
-            title: `${user.firstName} ${user.lastName} has requested a ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
-            content: `${user.firstName} ${user.lastName} has requested a ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.\n\n${body.motif}`,
+            title: `${user.firstName} ${user.lastName} has requested ${vowels.includes(toLower(body.leaveCategory[0])) ? 'an' : 'a'} ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
+            content: `${user.firstName} ${user.lastName} has requested ${vowels.includes(toLower(body.leaveCategory[0])) ? 'an' : 'a'} ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.\n\n${body.motif}`,
             category: body.requestCategory,
-            targetUser: userGroup.poleLead,
+            targetUser: ceo.userId,
             vues: []
           }, (err, result) => {
             if (err) {
@@ -39,8 +42,38 @@ const createRequest = ({ user, db, body }, res) => {
               });
             }
           });
-        }
-      })
+
+        });
+      } else {
+        db.collection("groups").findOne({ groupId: user.groupId }, (error, userGroup) => {
+          if (error) {
+            return res.status(500).json({
+              errorMessage: "Something went wrong."
+            });
+          }
+  
+          if (userGroup) {
+            db.collection('notifications').insertOne({
+              notifId: uuid(),
+              title: `${user.firstName} ${user.lastName} has requested ${vowels.includes(toLower(body.leaveCategory[0])) ? 'an' : 'a'} ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
+              content: `${user.firstName} ${user.lastName} has requested ${vowels.includes(toLower(body.leaveCategory[0])) ? 'an' : 'a'} ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.\n\n${body.motif}`,
+              category: body.requestCategory,
+              targetUser: userGroup.poleLead,
+              vues: []
+            }, (err, result) => {
+              if (err) {
+                return res.status(500).json({
+                  error: err
+                });
+              } else if (result) {
+                return res.status(200).json({
+                  message: "Request created successfully."
+                });
+              }
+            });
+          }
+        })
+      }
     }
   });
 };
