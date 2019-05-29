@@ -7,6 +7,7 @@ const createRequest = ({ user, db, body }, res) => {
   db.collection('requests').insertOne({
     requestId: uuid(),
     ...body,
+    userId : user.userId ,
     status: "pending"
   }, function (err, result) {
     if (err) {
@@ -26,8 +27,9 @@ const createRequest = ({ user, db, body }, res) => {
 
           db.collection('notifications').insertOne({
             notifId: uuid(),
-            title: `${user.firstName} ${user.lastName} has requested ${vowels.includes(toLower(body.leaveCategory[0])) ? 'an' : 'a'} ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
-            content: `${user.firstName} ${user.lastName} has requested ${vowels.includes(toLower(body.leaveCategory[0])) ? 'an' : 'a'} ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.\n\n${body.motif}`,
+
+            title: `${user.firstName} ${user.lastName} has requested an ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
+            content: `${user.firstName} ${user.lastName} has requested an ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.\n\n${body.motif}`,
             category: body.requestCategory,
             targetUser: ceo.userId,
             vues: []

@@ -11,7 +11,7 @@ const getNotifications = ({ user, db }, res) => {
       // console.log("Notifications:", result.filter(notif => notif.userId === user.userId || notif.toAll));
 
       return res.status(200).json({
-        notifications: result.filter(notif => notif.userId === user.userId || notif.toAll)
+        notifications: result.filter(notif => notif.targetUser === user.userId || notif.toAll)
       });
     } else {
       return res.status(400).json({

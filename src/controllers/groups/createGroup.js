@@ -21,6 +21,7 @@ const createGroup = ({ db, body }, res) => {
       db.collection('groups').insertOne({
         groupId: uuid(),
         name: body.name,
+        shortName: body.shortName,
         poleLead: body.poleLead
       }, function (err, result) {
         if (err) {
