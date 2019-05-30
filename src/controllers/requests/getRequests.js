@@ -1,26 +1,30 @@
-import initFirebase from "../../initFirebase";
+import { take, orderBy } from "lodash";
 
-const getRequests = (req, res) => {
-  initFirebase
-    .firestore()
-    .collection("requests")
-    .get()
-    .then(snapshot => {
-      let requests = [];
-      snapshot.forEach(doc => {
-        console.log(doc.id, "=>", doc.data());
-        requests.push(doc.data())
+const getRequests = ({ user, db, query }, res) => {
+
+  console.log("[REQUEST] ", query);
+
+  db.collection("requests").find({
+    userId: user.userId
+  }).toArray((error, result) => {
+    if (error) {
+      return res.status(500).json({
+        errorMessage: "Something went wrong."
       });
+    }
+
+    if (result.length > 0) {
+
       return res.status(200).json({
         requests: requests
       });
-    })
-    .catch(err => {
-      console.log("Error getting documents", err);
-      res.status(400).json({
-        error: err
+
+    } else {
+      return res.status(400).json({
+        errorMessage: "No data found."
       });
-    });
+    }
+  });
 };
 
 export default getRequests;
