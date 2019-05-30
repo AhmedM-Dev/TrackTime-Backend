@@ -8,6 +8,7 @@ import authenticate from "../controllers/authentication/authenticate";
 
 import getUsers from "../controllers/users/getUsers"
 import getAvatar from "../controllers/users/getAvatar.js";
+import uploadAvatar from "../controllers/users/uploadAvatar";
 import registerUser from "../controllers/users/registerUser";
 import updateUser from "../controllers/users/updateUser";
 import deleteUser from "../controllers/users/deleteUser";
@@ -97,6 +98,7 @@ router.put("/tracktime/api/users/:userId", updateUser);
 router.delete("/tracktime/api/users/:userId", deleteUser);
 router.patch("/tracktime/api/users", generateUsers);
 router.get("/tracktime/api/avatar", getAvatar);
+router.put("/tracktime/api/avatar", uploadAvatar);
 
 router.get("/tracktime/api/groups", getGroups);
 router.post("/tracktime/api/groups", createGroup);
@@ -119,8 +121,8 @@ router.post("/tracktime/api/requests", createRequest);
 
 router.get("/tracktime/api/events", getEvents);
 router.post("/tracktime/api/events", createEvent);
-router.put("/tracktime/api/events/:id", updateEvent);
-router.delete("/tracktime/api/events/:id", deleteEvent);
+router.put("/tracktime/api/events/:eventId", updateEvent);
+router.delete("/tracktime/api/events/:eventId", deleteEvent);
 
 router.get("/tracktime/api/travels", getTravels);
 router.post("/tracktime/api/travels", createTravel);

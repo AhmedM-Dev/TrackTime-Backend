@@ -22,8 +22,7 @@ const getUsers = ({ db }, res) => {
         password: 1,
         photo: { $arrayElemAt: ["$avatar.photo", 0] }
       }
-    },
-    // { $out: "combined" }
+    }
   ]).toArray((error, result) => {
     if (error) {
       return res.status(500).json({
