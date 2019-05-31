@@ -1,15 +1,23 @@
-import uuid from 'uuid/v1';
+import uuid from 'uuid/v4';
 import { toLower } from 'lodash';
+import moment from 'moment';
 
 const vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
 
 const createRequest = ({ user, db, body }, res) => {
-  db.collection('requests').insertOne({
+
+  const requestBody = {
     requestId: uuid(),
     ...body,
-    userId : user.userId ,
-    status: "pending"
-  }, function (err, result) {
+    fromUser: user.userId,
+    fromUserName: `${user.firstName} ${user.lastName}`,
+    userRemainingLeaves: 0,
+    status: "pending",
+    createdAt: moment().format('DD-MM-YYYY H:mm:ss'),
+    createdAtTimestamp: moment().unix()
+  }
+
+  db.collection('requests').insertOne(requestBody, function (err, result) {
     if (err) {
       console.log("An error occured.");
       return res.status(400).json({
@@ -27,13 +35,14 @@ const createRequest = ({ user, db, body }, res) => {
 
           db.collection('notifications').insertOne({
             notifId: uuid(),
-
             title: `${user.firstName} ${user.lastName} has requested an ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
-            content: `${user.firstName} ${user.lastName} has requested an ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.\n\n${body.motif}`,
+            content: body.motif,
             category: body.requestCategory,
-            fromUser: user.userId,
+            request: requestBody,
             targetUser: ceo.userId,
-            vues: []
+            vues: [],
+            createdAt: moment().format('DD-MM-YYYY H:mm:ss'),
+            createdAtTimestamp: moment().unix()
           }, (err, result) => {
             if (err) {
               return res.status(500).json({
@@ -54,16 +63,19 @@ const createRequest = ({ user, db, body }, res) => {
               errorMessage: "Something went wrong."
             });
           }
-  
+
           if (userGroup) {
+
             db.collection('notifications').insertOne({
               notifId: uuid(),
               title: `${user.firstName} ${user.lastName} has requested ${vowels.includes(toLower(body.leaveCategory[0])) ? 'an' : 'a'} ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
-              content: `${user.firstName} ${user.lastName} has requested ${vowels.includes(toLower(body.leaveCategory[0])) ? 'an' : 'a'} ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.\n\n${body.motif}`,
+              content: body.motif,
               category: body.requestCategory,
-              fromUser: user.userId,
+              request: requestBody,
               targetUser: userGroup.poleLead,
-              vues: []
+              vues: [],
+              createdAt: moment().format('DD-MM-YYYY H:mm:ss'),
+              createdAtTimestamp: moment().unix()
             }, (err, result) => {
               if (err) {
                 return res.status(500).json({
@@ -75,6 +87,7 @@ const createRequest = ({ user, db, body }, res) => {
                 });
               }
             });
+
           }
         })
       }

@@ -1,4 +1,4 @@
-import uuid from 'uuid/v1';
+import uuid from 'uuid/v4';
 
 const createTravel = ({ db, body }, res) => {
   console.log(body);

@@ -16,9 +16,6 @@ const vueNotification = ({ user, db, params }, res) => {
               errorMessage: "Something went wrong."
             });
           } else {
-
-            console.log("UP", updatedNotif);
-
             return res.status(200).json({
               notification: updatedNotif
             });

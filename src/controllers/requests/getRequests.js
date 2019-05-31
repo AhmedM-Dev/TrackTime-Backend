@@ -5,7 +5,7 @@ const getRequests = ({ user, db, query }, res) => {
   console.log("[REQUEST] ", query);
 
   db.collection("requests").find({
-    userId: user.userId
+    fromUser: user.userId
   }).toArray((error, result) => {
     if (error) {
       return res.status(500).json({

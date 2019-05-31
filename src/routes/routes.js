@@ -2,6 +2,8 @@ import express from "express";
 import { MongoClient } from 'mongodb';
 import jwt from "jsonwebtoken";
 
+import scheduler from '../scheduler';
+
 import config from "../../config/config.json";
 
 import authenticate from "../controllers/authentication/authenticate";
@@ -32,6 +34,7 @@ import generateAttendances from "../controllers/attendances/generateAttendances.
 import getRequests from "../controllers/requests/getRequests";
 import createRequest from "../controllers/requests/createRequest";
 import editRequest from "../controllers/requests/editRequest";
+import respondToLeaveRequest from "../controllers/requests/respondToLeaveRequest";
 
 import getEvents from "../controllers/events/getEvents";
 import createEvent from "../controllers/events/createEvent";
@@ -53,6 +56,8 @@ MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, fun
     console.error("Unable to connect to MongoDB database server at:", "localhost:27017");
   } else {
     database = db.db(config.DATABASE);
+
+    scheduler(database);
   }
 });
 
@@ -97,6 +102,7 @@ router.post("/tracktime/api/users", registerUser);
 router.put("/tracktime/api/users/:userId", updateUser);
 router.delete("/tracktime/api/users/:userId", deleteUser);
 router.patch("/tracktime/api/users", generateUsers);
+
 router.get("/tracktime/api/avatar", getAvatar);
 router.put("/tracktime/api/avatar", uploadAvatar);
 
@@ -117,7 +123,8 @@ router.patch("/tracktime/api/attendances", generateAttendances);
 
 // router.get("/tracktime/api/requests", getRequests);
 router.post("/tracktime/api/requests", createRequest);
-// router.patch("/tracktime/api/requests/:id", editRequest);
+// router.patch("/tracktime/api/requests/:requestId", editRequest);
+router.put("/tracktime/api/requests/:requestId", respondToLeaveRequest);
 
 router.get("/tracktime/api/events", getEvents);
 router.post("/tracktime/api/events", createEvent);
@@ -126,7 +133,7 @@ router.delete("/tracktime/api/events/:eventId", deleteEvent);
 
 router.get("/tracktime/api/travels", getTravels);
 router.post("/tracktime/api/travels", createTravel);
-// router.put("/tracktime/api/travels/:id", updateTravel);
+// router.put("/tracktime/api/travels/:travelId", updateTravel);
 
 // router.get("/tracktime/api/history", getHistory);
 

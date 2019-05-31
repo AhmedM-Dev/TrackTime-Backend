@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import nodemailer from 'nodemailer';
-import uuid from 'uuid/v1';
+import uuid from 'uuid/v4';
 
 const registerUser = ({ db, body }, res) => {
 
