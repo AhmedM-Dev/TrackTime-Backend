@@ -35,7 +35,10 @@ const createRequest = ({ user, db, body }, res) => {
 
           db.collection('notifications').insertOne({
             notifId: uuid(),
-            title: `${user.firstName} ${user.lastName} has requested an ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
+            title: `${user.firstName} ${user.lastName} has requested a ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} .`,
+            
+            // from ${body.dateFrom} to ${body.dateTo}
+            
             content: body.motif,
             category: body.requestCategory,
             request: requestBody,
@@ -68,7 +71,8 @@ const createRequest = ({ user, db, body }, res) => {
 
             db.collection('notifications').insertOne({
               notifId: uuid(),
-              title: `${user.firstName} ${user.lastName} has requested ${vowels.includes(toLower(body.leaveCategory[0])) ? 'an' : 'a'} ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
+              title: `${user.firstName} ${user.lastName} has requested ${vowels.includes(toLower(body.leaveCategory[0])) ? 'an' : 'a'} ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'}`,
+              // from ${body.dateFrom} to ${body.dateTo}
               content: body.motif,
               category: body.requestCategory,
               request: requestBody,
