@@ -9,7 +9,7 @@ const getHoursDelays = (attendances) => {
         if (new Date("2018-02-02 " + day.attendances[0]).getHours() > 9) {
             delays++;
         }
-        hoursSum += getHoursOfWork(day.attendances).getHours() * 3600 + getHoursOfWork(day.attendances).getMinutes() * 60 + getHoursOfWork(day.attendances).getSeconds();
+        hoursSum += day.attendances.length === 4 ? getHoursOfWork(day.attendances).getHours() * 3600 + getHoursOfWork(day.attendances).getMinutes() * 60 + getHoursOfWork(day.attendances).getSeconds() : 0;
     });
 
     return {

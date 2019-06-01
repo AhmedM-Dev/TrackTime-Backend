@@ -11,7 +11,7 @@ const respondToLeaveRequest = ({ db, body, params }, res) => {
       if (body.accept) {
         db.collection("leaves").insertOne({
           leaveId: uuid(),
-          from: body.request.dateFrom,
+          dateFrom: body.request.dateFrom,
           sessionFrom: body.request.sessionFrom,
           dateTo: body.request.dateTo,
           sessionTo: body.request.sessionTo,

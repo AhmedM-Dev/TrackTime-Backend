@@ -27,7 +27,7 @@ import getStats from "../controllers/dashboard/getStats";
 import getCalendarData from "../controllers/calendar/getCalendarData";
 
 import getAttendances from "../controllers/attendances/getAttendances";
-// import createAttendance from "../controllers/attendances/createAttendance";
+import checkIn from "../controllers/attendances/checkIn";
 import updateAttendance from "../controllers/attendances/updateAttendance";
 import generateAttendances from "../controllers/attendances/generateAttendances.js";
 
@@ -117,7 +117,7 @@ router.get("/tracktime/api/stats", getStats);
 router.get("/tracktime/api/calendar", getCalendarData);
 
 router.get("/tracktime/api/attendances", getAttendances);
-// router.post("/tracktime/api/attendances", createAttendance);
+router.post("/tracktime/api/attendances", checkIn);
 // router.put("/tracktime/api/attendances/:id", updateAttendance);
 router.patch("/tracktime/api/attendances", generateAttendances);
 

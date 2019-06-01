@@ -1,4 +1,4 @@
-import { take, orderBy } from "lodash";
+import { take, orderBy, sort } from "lodash";
 
 const getAttendances = ({ user, db, query }, res) => {
 
@@ -31,7 +31,7 @@ const getAttendances = ({ user, db, query }, res) => {
         });
       } else {
         return res.status(200).json({
-          attendances: take(orderBy(result, 'date', 'desc'), 10)
+          attendances: take(orderBy(result, 'date', 'desc').filter(attendance => new Date(attendance.date) <= new Date()), 10)
         });
       }
 
