@@ -1,4 +1,4 @@
-const removeHoliday = ({ db, params }, res) => {
+const removeHoliday = async ({ db, params }, res) => {
 
   if (params && Object.keys(params).length > 0) {
     try {

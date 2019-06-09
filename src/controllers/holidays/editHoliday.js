@@ -7,7 +7,7 @@ const addHoliday = async ({ db, params, body }, res) => {
   if (body && Object.keys(body).length > 0) {
 
     try {
-      const holiday = await db.collection('leaveCredit').findOneAndUpdate(
+      const holiday = await db.collection('holidays').findOneAndUpdate(
         { userId: user.userId },
         { $set: {
           _id: `${toLower(trim(user.firstName))}.${toLower(trim(user.lastName))}`,

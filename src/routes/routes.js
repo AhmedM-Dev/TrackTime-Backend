@@ -45,6 +45,11 @@ import getTravels from "../controllers/travels/getTravels";
 import createTravel from "../controllers/travels/createTravel";
 import updateTravel from "../controllers/travels/updateTravel";
 
+import getHolidays from "../controllers/holidays/getHolidays";
+import addHoliday from "../controllers/holidays/addHoliday";
+import editHoliday from "../controllers/holidays/editHoliday";
+import removeHoliday from "../controllers/holidays/removeHoliday";
+
 import getHistory from "../controllers/history/getHistory";
 
 import getNotifications from "../controllers/notifications/getNotifications";
@@ -136,6 +141,11 @@ router.delete("/tracktime/api/events/:eventId", deleteEvent);
 router.get("/tracktime/api/travels", getTravels);
 router.post("/tracktime/api/travels", createTravel);
 // router.put("/tracktime/api/travels/:travelId", updateTravel);
+
+router.get("/tracktime/api/holidays", getHolidays);
+router.post("/tracktime/api/holidays", addHoliday);
+router.put("/tracktime/api/holidays/:holidayId", editHoliday);
+router.delete("/tracktime/api/holidays/:holidayId", removeHoliday);
 
 // router.get("/tracktime/api/history", getHistory);
 
