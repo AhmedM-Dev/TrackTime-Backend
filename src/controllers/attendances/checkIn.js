@@ -58,7 +58,7 @@ const CheckIn = ({ db, user }, res) => {
 
         if (result) {
 
-          console.log(`Successfully checked in at ${checkAt}. (${attendance[0]._id})`);
+          console.log(`Successfully checked in at ${checkAt}. (new attendance)`);
 
           if ((moment(checkAt).hours >= 9)) {
             await db.collection("notifications").insertOne({

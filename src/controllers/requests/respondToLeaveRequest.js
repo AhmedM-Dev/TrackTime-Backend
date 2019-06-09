@@ -1,7 +1,7 @@
 import uuid from 'uuid/v4';
 import moment from 'moment';
 
-const respondToLeaveRequest = ({ db, body, params }, res) => {
+const respondToLeaveRequest = async ({ db, body, params }, res) => {
 
   console.log('body', body);
   console.log('params', params);
@@ -152,6 +152,16 @@ const respondToLeaveRequest = ({ db, body, params }, res) => {
     } else if (body.request.requestCategory === 'ATTENDANCE') {
       // ================= BEGIN ===================
 
+      if (body.accept) {
+        console.log('\n=========================================================');
+        console.log('REQUEST', body.request);
+        console.log('=========================================================\n');
+
+        await db.collection('attendances').updateOne({ _id: body.request.attendance._id },
+          { $set: { attendances: body.request.attendance.attendances } }
+        )
+      }
+
       db.collection('requests').findOneAndUpdate(
         { requestId: params.requestId },
         { $set: { status: body.accept ? 'accepted' : 'rejected' } }, (err, result) => {
@@ -162,8 +172,6 @@ const respondToLeaveRequest = ({ db, body, params }, res) => {
           }
 
           if (result) {
-            console.log("accept result.", result.value);
-
             db.collection('notifications').updateOne(
               { notifId: body.notifId },
               { $set: { request: { ...result.value, status: body.accept ? 'accepted' : 'rejected' } } }, (err, result) => {
@@ -179,7 +187,7 @@ const respondToLeaveRequest = ({ db, body, params }, res) => {
             db.collection("notifications").insertOne({
               notifId: uuid(),
               title: `Your request has been ${body.accept ? 'accepted' : 'rejected'}`,
-              content: `Your attendance correction request at ${body.request.date} has been ${body.accept ? 'accepted' : 'rejected'}\n\n${body.note}`,
+              content: `Your attendance correction request at ${moment(body.request.attendance.date).format('DD-MM-YYYY')} has been ${body.accept ? 'accepted' : 'rejected'}\n\n${body.note}\n\n${body.request.attendance.attendances.join('\n')}`,
               category: 'INFO',
               targetUser: body.request.fromUser,
               vues: [],
@@ -196,6 +204,8 @@ const respondToLeaveRequest = ({ db, body, params }, res) => {
             });
           }
         }, { returnNewDocument: true });
+
+
 
       // ================== END ====================
     } else {

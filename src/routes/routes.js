@@ -50,6 +50,8 @@ import getHistory from "../controllers/history/getHistory";
 import getNotifications from "../controllers/notifications/getNotifications";
 import vueNotification from "../controllers/notifications/vueNotification";
 
+import generateLeaveCredit from '../controllers/leaveCredit/generateLeaveCredit';
+
 let database = null;
 MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, db) {   //here db is the client obj
   if (err) {
@@ -121,10 +123,10 @@ router.post("/tracktime/api/attendances", checkIn);
 // router.put("/tracktime/api/attendances/:id", updateAttendance);
 router.patch("/tracktime/api/attendances", generateAttendances);
 
-// router.get("/tracktime/api/requests", getRequests);
+router.get("/tracktime/api/requests", getRequests);
 router.post("/tracktime/api/requests", createRequest);
-// router.patch("/tracktime/api/requests/:requestId", editRequest);
-router.put("/tracktime/api/requests/:requestId", respondToLeaveRequest);
+router.put("/tracktime/api/requests/:requestId/edit", editRequest);
+router.put("/tracktime/api/requests/:requestId/respond", respondToLeaveRequest);
 
 router.get("/tracktime/api/events", getEvents);
 router.post("/tracktime/api/events", createEvent);
@@ -139,5 +141,7 @@ router.post("/tracktime/api/travels", createTravel);
 
 router.get("/tracktime/api/notifications", getNotifications);
 router.put("/tracktime/api/notifications/:notifId", vueNotification);
+
+router.put("/tracktime/api/leavecredit", generateLeaveCredit);
 
 export default router;
