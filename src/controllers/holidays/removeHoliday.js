@@ -1,18 +1,18 @@
 const removeHoliday = ({ db, params }, res) => {
-  db.collection('groups').deleteOne({
-    groupId: params.groupId
-  }, function (err, result) {
-    if (err) {
-      console.log("An error occured.");
-      return res.status(400).json({
-        error: err
-      });
-    } else if (result) {
+
+  if (params && Object.keys(params).length > 0) {
+    try {
+      const result = await db.collection('holidays').deleteOne();
+
       return res.status(200).json({
         result
       });
+    } catch (error) {
+      return res.status(500).json({
+        error
+      });
     }
-  });
+  }
 };
 
 export default removeHoliday;

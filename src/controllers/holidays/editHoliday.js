@@ -1,41 +1,27 @@
-const editHoliday = ({ db, body, params }, res) => {
-  console.log('updating:', params);
+import uuid from 'uuid/v4';
 
-  db.collection('groups').updateOne(
-    { groupId: params.groupId },
-    { $set: { ...body } },
-    function (err, result) {
-      if (err) {
-        console.log("An error occured.");
-        return res.status(400).json({
-          error: err
-        });
-      } else if (result) {
+const addHoliday = async ({ db, params, body }, res) => {
 
-        if (JSON.parse(result).nModified > 0) {
-          db.collection('groups').find({
-            groupId: params.groupId
-          }).toArray((error, result) => {
-            if (error) {
-              console.log("An error occured.");
-              return res.status(400).json({
-                error
-              });
-            } else {
-              console.log('result ===>', result[0]);
+  console.log('[ADD HOLIDAY] ', body);
 
-              return res.status(200).json({
-                group: result[0]
-              });
-            }
-          })
-        } else {
-          return res.status(200).json({
-            info: "Nothing to update."
-          });
-        }
-      }
-    });
-};
+  if (body && Object.keys(body).length > 0) {
 
-export default editHoliday;
+    try {
+      const holiday = await db.collection('leaveCredit').findOneAndUpdate(
+        { userId: user.userId },
+        { $set: {
+          _id: `${toLower(trim(user.firstName))}.${toLower(trim(user.lastName))}`,
+          holidayId: uuid(),
+          ...body
+        }},
+        { upsert: true, returnNewDocument: true }
+      );
+
+      return res.status(200).json({ holiday });
+    } catch (error) {
+      return res.status(500).json({ error });
+    }
+  }
+}
+
+export default addHoliday;
