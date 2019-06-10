@@ -1,3 +1,5 @@
+import { take, orderBy } from "lodash";
+
 const getNotifications = ({ user, db }, res) => {
   db.collection("notifications").find({}).toArray((error, result) => {
     if (error) {
@@ -8,7 +10,7 @@ const getNotifications = ({ user, db }, res) => {
 
     if (result.length > 0) {
       return res.status(200).json({
-        notifications: result.filter(notif => notif.targetUser === user.userId || notif.public)
+        notifications: take(orderBy(result.filter(notif => notif.targetUser === user.userId || notif.public), 'createdAtTimestamp', 'desc'), 30)
       });
     } else {
       return res.status(400).json({

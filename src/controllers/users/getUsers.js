@@ -2,7 +2,7 @@ import { toLower } from 'lodash';
 
 const getUsers = async ({ user, db, query }, res) => {
 
-  const { groupId, poleLead } = query;
+  const { groupId, poleLead, all } = query;
 
   console.log('[GET USERS]', query);
 
@@ -32,7 +32,7 @@ const getUsers = async ({ user, db, query }, res) => {
       }
     ]).toArray();
 
-    if (toLower(user.businessRole) === 'administrator' || toLower(user.businessRole) === 'ceo') {
+    if (toLower(user.businessRole) === 'administrator' || toLower(user.businessRole) === 'ceo' || all) {
       return res.status(200).json({ users });
     } else if (toLower(user.businessRole) === 'pole lead') {
       let group = await db.collection('groups').findOne({ poleLead: user.userId });

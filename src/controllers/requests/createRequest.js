@@ -33,9 +33,19 @@ const createRequest = ({ user, db, body }, res) => {
             });
           }
 
+          let title = "";
+
+          if (body.requestCategory === 'ATTENDANCE') {
+            title = `${user.firstName} ${user.lastName} has requested to correct an attendance at ${moment(body.attendance.date).format('DD-MM-YYYY')}.`;
+          } else if (body.requestCategory === 'LEAVE' || body.requestCategory === 'AUTHORIZATION') {
+            title = `${user.firstName} ${user.lastName} has requested an ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`;
+          } else if (body.requestCategory === 'TRAVEL') {
+            title = `${user.firstName} ${user.lastName} has sent a travel request`;
+          }
+
           db.collection('notifications').insertOne({
             notifId: uuid(),
-            title: body.requestCategory === 'ATTENDANCE' ? `${user.firstName} ${user.lastName} has requested to correct an attendance at ${moment(body.attendance.date).format('DD-MM-YYYY')}.` : `${user.firstName} ${user.lastName} has requested an ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
+            title,
             content: body.motif,
             category: body.requestCategory,
             request: requestBody,
@@ -66,9 +76,19 @@ const createRequest = ({ user, db, body }, res) => {
 
           if (userGroup) {
 
+            let title = '';
+
+            if (body.requestCategory === 'ATTENDANCE') {
+              title = `${user.firstName} ${user.lastName} has requested to correct an attendance at ${moment(body.attendance.date).format('DD-MM-YYYY')}.`;
+            } else if (body.requestCategory === 'LEAVE' || body.requestCategory === 'AUTHORIZATION') {
+              title = `${user.firstName} ${user.lastName} has requested an ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`;
+            } else if (body.requestCategory === 'TRAVEL') {
+              title = `${user.firstName} ${user.lastName} has sent a travel request`;
+            }
+
             db.collection('notifications').insertOne({
               notifId: uuid(),
-              title: body.requestCategory === 'ATTENDANCE' ? `${user.firstName} ${user.lastName} has requested to correct an attendance at ${moment(body.attendance.date).format('DD-MM-YYYY')}.` : `${user.firstName} ${user.lastName} has requested ${vowels.includes(toLower(body.leaveCategory[0])) ? 'an' : 'a'} ${body.leaveCategory}${body.leaveCategory.indexOf('leave') !== -1 ? '' : ' leave'} from ${body.dateFrom} to ${body.dateTo}.`,
+              title,
               content: body.motif,
               category: body.requestCategory,
               request: requestBody,
