@@ -8,7 +8,7 @@ const scheduler = (db) => {
 
   var rule = new RecurrenceRule();
   rule.hour = 23;
-  rule.minute = 0;
+  rule.minute = 50;
 
   const checkAbsencesAndNotes = scheduleJob(rule, async function () {
     // check users absences
@@ -24,7 +24,7 @@ const scheduler = (db) => {
       if (attendances && attendances.length > 0) {
 
         users.map(async user => {
-          let isTodayAttendances = attendances.filter(item => item.userId === user.userId && moment(item.date).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY'));
+          let isTodayAttendances = attendances.filter(item => item.userId === user.userId && moment(item.date).format('DD-MM-YYYY') === moment().format('DD-MM-YYYY')); //if user has attendances today
           let isTodayLeave = leaves.filter(item => item.forUser === user.userId && moment(item.dateFrom) <= moment() && moment(item.datoTo) >= moment());
           let isTodayTravel = travels.filter(item => item.userId === user.userId && moment(item.dateFrom) <= moment() && moment(item.datoTo) >= moment());
           let isTodayHoliday = holidays.filter(item => moment(item.dateFrom) <= moment() && moment(item.datoTo) >= moment());
