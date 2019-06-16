@@ -8,9 +8,7 @@ const createTravel = ({ db, body }, res) => {
     travelType: body.travelType,
     conductor: body.conductor,
     startDate: body.startDate,
-    startTime: body.startTime,
     endDate: body.endDate,
-    endTime: body.endTime,
     type: body.type,
     destinationAdress: body.destinationAdress,
   }, function (err, result) {
