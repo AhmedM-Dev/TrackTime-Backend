@@ -1,30 +1,23 @@
-import { take, orderBy } from "lodash";
-
-const getRequests = ({ user, db, query }, res) => {
+const getRequests = async ({ user, db, query }, res) => {
 
   console.log("[REQUEST] ", query);
 
-  db.collection("requests").find({
-    fromUser: user.userId
-  }).toArray((error, result) => {
-    if (error) {
-      return res.status(500).json({
-        errorMessage: "Something went wrong."
-      });
-    }
+  const userId = query.userId || user.userId;
+  const { status } = query;
 
-    if (result.length > 0) {
+  try {
 
-      return res.status(200).json({
-        requests: requests
-      });
+    let requests = await db.collection("requests").find({ fromUser: userId }).toArray();
 
-    } else {
-      return res.status(400).json({
-        errorMessage: "No data found."
-      });
-    }
-  });
+    requests = status ? requests.filter(request => request.status === status) : requests;
+
+    return res.status(200).json({ requests });
+
+  } catch (error) {
+    return res.status(500).json({
+      error
+    });
+  }
 };
 
 export default getRequests;

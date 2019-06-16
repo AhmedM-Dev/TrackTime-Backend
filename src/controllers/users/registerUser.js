@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import nodemailer from 'nodemailer';
 import uuid from 'uuid/v4';
+import { toLower } from 'lodash';
 
 const registerUser = ({ db, body }, res) => {
 
@@ -28,6 +29,7 @@ const registerUser = ({ db, body }, res) => {
         }
 
         db.collection('users').insertOne({
+          _id: `${toLower(body.firstName)}.${toLower(body.lastName)}`,
           userId: uuid(),
           email: body.email,
           password: bcrypt.hashSync(body.password),

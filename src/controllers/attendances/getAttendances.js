@@ -1,46 +1,38 @@
-import { take, orderBy, sort } from "lodash";
+import { take, orderBy } from "lodash";
 
-const getAttendances = ({ user, db, query }, res) => {
+const getAttendances = async ({ user, db, query }, res) => {
 
   console.log("[REQUEST] ", query);
+  console.log("user ", query.userId || user.userId);
 
-  db.collection("attendances").find({
-    userId: user.userId
-  }).toArray((error, result) => {
-    if (error) {
-      return res.status(500).json({
-        errorMessage: "Something went wrong."
-      });
-    }
+  const userId = query.userId || user.userId;
+  const { dateFrom, dateTo } = query;
 
-    if (result.length > 0) {
+  try {
+    let attendances = await db.collection("attendances").find({ userId }).toArray();
 
-      const { dateFrom, dateTo } = query;
-
-      if (dateFrom && dateTo) {
-        return res.status(200).json({
-          attendances: take(orderBy(result, 'date', 'desc').filter(attendance => new Date(attendance.date) <= new Date(dateTo) && new Date(attendance.date) >= new Date(dateFrom)), 10)
-        });
-      } else if (dateFrom && !dateTo) {
-        return res.status(200).json({
-          attendances: take(orderBy(result, 'date', 'desc').filter(attendance => new Date(attendance.date) >= new Date(dateFrom)), 10)
-        });
-      } else if (!dateFrom && dateTo) {
-        return res.status(200).json({
-          attendances: take(orderBy(result, 'date', 'desc').filter(attendance => new Date(attendance.date) <= new Date(dateTo)), 10)
-        });
-      } else {
-        return res.status(200).json({
-          attendances: take(orderBy(result, 'date', 'desc').filter(attendance => new Date(attendance.date) <= new Date()), 10)
-        });
-      }
-
-    } else {
+    if (!attendances || attendances.length < 1) {
       return res.status(400).json({
-        errorMessage: "No data found."
+        errorMessage: "No data available."
       });
     }
-  });
+
+    if (attendances && attendances.length > 0) {
+      attendances = dateFrom ? attendances.filter(attendance => new Date(attendance.date) >= new Date(dateFrom)) : attendances;
+      attendances = dateTo ? attendances.filter(attendance => new Date(attendance.date) <= new Date(dateTo)) : attendances;
+
+      attendances = attendances.filter(attendance => new Date(attendance.date) <= new Date());
+
+      return res.status(200).json({
+        attendances: take(orderBy(attendances, 'date', 'desc'), 20)
+      });
+    }
+
+  } catch (error) {
+    return res.status(500).json({
+      errorMessage: "Something went wrong."
+    });
+  }
 };
 
 export default getAttendances;

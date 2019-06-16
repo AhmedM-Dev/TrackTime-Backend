@@ -45,10 +45,17 @@ import getTravels from "../controllers/travels/getTravels";
 import createTravel from "../controllers/travels/createTravel";
 import updateTravel from "../controllers/travels/updateTravel";
 
+import getHolidays from "../controllers/holidays/getHolidays";
+import addHoliday from "../controllers/holidays/addHoliday";
+import editHoliday from "../controllers/holidays/editHoliday";
+import removeHoliday from "../controllers/holidays/removeHoliday";
+
 import getHistory from "../controllers/history/getHistory";
 
 import getNotifications from "../controllers/notifications/getNotifications";
 import vueNotification from "../controllers/notifications/vueNotification";
+
+import generateLeaveCredit from '../controllers/leaveCredit/generateLeaveCredit';
 
 let database = null;
 MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, db) {   //here db is the client obj
@@ -121,10 +128,10 @@ router.post("/tracktime/api/attendances", checkIn);
 // router.put("/tracktime/api/attendances/:id", updateAttendance);
 router.patch("/tracktime/api/attendances", generateAttendances);
 
-// router.get("/tracktime/api/requests", getRequests);
+router.get("/tracktime/api/requests", getRequests);
 router.post("/tracktime/api/requests", createRequest);
-// router.patch("/tracktime/api/requests/:requestId", editRequest);
-router.put("/tracktime/api/requests/:requestId", respondToLeaveRequest);
+router.put("/tracktime/api/requests/:requestId/edit", editRequest);
+router.put("/tracktime/api/requests/:requestId/respond", respondToLeaveRequest);
 
 router.get("/tracktime/api/events", getEvents);
 router.post("/tracktime/api/events", createEvent);
@@ -135,9 +142,16 @@ router.get("/tracktime/api/travels", getTravels);
 router.post("/tracktime/api/travels", createTravel);
 // router.put("/tracktime/api/travels/:travelId", updateTravel);
 
+router.get("/tracktime/api/holidays", getHolidays);
+router.post("/tracktime/api/holidays", addHoliday);
+router.put("/tracktime/api/holidays/:holidayId", editHoliday);
+router.delete("/tracktime/api/holidays/:holidayId", removeHoliday);
+
 // router.get("/tracktime/api/history", getHistory);
 
 router.get("/tracktime/api/notifications", getNotifications);
 router.put("/tracktime/api/notifications/:notifId", vueNotification);
+
+router.put("/tracktime/api/leavecredit", generateLeaveCredit);
 
 export default router;

@@ -21,7 +21,7 @@ const authenticate = ({ db, body }, res) => {
         const { _id, ...user } = result[0];
 
         if (bcrypt.compareSync(pass, user.password)) {
-          const token = jwt.sign({ user }, config.secret, { expiresIn: '48h' });
+          const token = jwt.sign({ user }, config.secret, { expiresIn: '168h' });
           const { password, ...userWithoutPassword } = user;
 
           jwt.verify(token, config.secret, (err, decoded) => {

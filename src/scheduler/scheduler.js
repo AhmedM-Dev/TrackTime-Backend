@@ -7,7 +7,7 @@ const scheduler = (db) => {
   console.log("Started scheduler.");
 
   var rule = new RecurrenceRule();
-  rule.hour = 0;
+  rule.hour = 23;
   rule.minute = 0;
 
   const checkAbsencesAndNotes = scheduleJob(rule, async function () {
@@ -33,6 +33,7 @@ const scheduler = (db) => {
             await db.collection('absences').insertOne({
               absenceId: uuid(),
               absentUser: user.userId,
+              date: moment().format('DD-MM-YYYY')
             });
 
             await db.collection("notifications").insertOne({
@@ -48,8 +49,18 @@ const scheduler = (db) => {
           }
         });
       }
+
+      await db.collection('logs').insertOne({
+        logId: uuid(),
+        origin: 'SCHEDULER',
+        category: 'ABSENCE-CHECKING',
+        date: moment().format('DD-MM-YYYY'),
+        dateTimeStamp: moment().unix(),
+        description: `Checking absences for ${moment().format('DD-MM-YYYY')} done.`
+      });
+
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   });
 
@@ -59,7 +70,7 @@ const scheduler = (db) => {
   rule2.minute = 0;
   rule2.second = 0;
 
-  const addLeaveBonus = scheduleJob(rule2, function () {
+  const addLeaveBonus = scheduleJob(rule2, async () => {
     // Add 2 days as leave score to each user
     console.log('Add 2 days as leave score to each user');
   });

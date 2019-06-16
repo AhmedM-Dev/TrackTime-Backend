@@ -44,29 +44,61 @@ const statistics = (attendances) => {
   }
 }
 
-const getStats = ({ user, db, query }, res) => {
+const getStats = async ({ user, db, query }, res) => {
 
   console.log("[REQUEST] ", query);
 
-  db.collection("attendances").find({
-    userId: user.userId
-  }).toArray((error, result) => {
-    if (error) {
-      return res.status(500).json({
-        errorMessage: "Something went wrong."
-      });
-    }
+  const userId = query.userId || user.userId;
 
-    if (result.length > 0) {
+  const { all } = query;
+
+  try {
+
+    if (all === 'true') {
+      // let allStats = [];
+
+      const users = await db.collection('users').find({}).toArray();
+
+      const allStats = await Promise.all(users.map(async item => {
+        const result = await db.collection("attendances").find({ userId: item.userId }).toArray();
+        const { perMonth, ...stats } = statistics(parseInt(query.year) ? result.filter(item => new Date(item.date).getFullYear() === parseInt(query.year)) : result);
+
+        return { userId: item.userId, ...stats };
+      }));
+
+      return res.status(200).json({ ...allStats });
+    } else {
+      const result = await db.collection("attendances").find({ userId }).toArray();
+
       return res.status(200).json({
         ...statistics(parseInt(query.year) ? result.filter(item => new Date(item.date).getFullYear() === parseInt(query.year)) : result)
       });
-    } else {
-      return res.status(400).json({
-        errorMessage: "No data found."
-      });
     }
-  });
+  } catch (error) {
+    return res.status(500).json({
+      error
+    });
+  }
+
+  // db.collection("attendances").find({
+  //   userId
+  // }).toArray((error, result) => {
+  //   if (error) {
+  //     return res.status(500).json({
+  //       errorMessage: "Something went wrong."
+  //     });
+  //   }
+
+  //   if (result.length > 0) {
+  //     return res.status(200).json({
+  //       ...statistics(parseInt(query.year) ? result.filter(item => new Date(item.date).getFullYear() === parseInt(query.year)) : result)
+  //     });
+  //   } else {
+  //     return res.status(400).json({
+  //       errorMessage: "No data found."
+  //     });
+  //   }
+  // });
 };
 
 export default getStats;
