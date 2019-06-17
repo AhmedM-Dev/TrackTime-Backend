@@ -10,15 +10,15 @@ const authenticate = ({ db, body }, res) => {
   if (email && pass) {
     console.log('[AUTHENTICATION] ', body);
 
-    db.collection('users').find({
+    db.collection('users').findOne({
       email
-    }).toArray(function (err, result) {
+    }, function (err, result) {
       if (err) {
         throw err;
       }
 
-      if (result[0]) {
-        const { _id, ...user } = result[0];
+      if (result) {
+        const { _id, ...user } = result;
 
         if (bcrypt.compareSync(pass, user.password)) {
           const token = jwt.sign({ user }, config.secret, { expiresIn: '168h' });

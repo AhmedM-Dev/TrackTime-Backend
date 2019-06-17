@@ -16,6 +16,8 @@ import updateUser from "../controllers/users/updateUser";
 import deleteUser from "../controllers/users/deleteUser";
 import generateUsers from "../controllers/users/generateUsers";
 
+import updateProfile from "../controllers/users/updateProfile";
+
 import getGroups from "../controllers/groups/getGroups";
 import createGroup from "../controllers/groups/createGroup";
 import updateGroup from "../controllers/groups/updateGroup";
@@ -109,6 +111,7 @@ router.post("/tracktime/api/users", registerUser);
 router.put("/tracktime/api/users/:userId", updateUser);
 router.delete("/tracktime/api/users/:userId", deleteUser);
 router.patch("/tracktime/api/users", generateUsers);
+router.put("/tracktime/api/profile/:userId", updateProfile);
 
 router.get("/tracktime/api/avatar", getAvatar);
 router.put("/tracktime/api/avatar", uploadAvatar);
