@@ -1,26 +1,7 @@
-import initFirebase from "../../initFirebase";
-
-const getHistory = (req, res) => {
-  initFirebase
-    .firestore()
-    .collection("history")
-    .get()
-    .then(snapshot => {
-      let history = [];
-      snapshot.forEach(doc => {
-        console.log(doc.id, "=>", doc.data());
-        history.push(doc.data())
-      });
-      return res.status(200).json({
-        history: history
-      });
-    })
-    .catch(err => {
-      console.log("Error getting documents", err);
-      res.status(400).json({
-        error: err
-      });
-    });
+const getHistory = async ({ db, user }, res) => {
+  const leaves = await db.collection('leaves').find({ userId: user.userId });
+  const travels = await db.collection('travels').find({ userId: user.userId });
+  const authorizations = await db.collection('authorizations').find({ userId: user.userId });
 };
 
 export default getHistory;

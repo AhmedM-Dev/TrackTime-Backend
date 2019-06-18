@@ -1,46 +1,46 @@
-import { take, orderBy } from "lodash";
+import moment from 'moment';
 
-const getCalendarData = ({ user, db, query }, res) => {
+const getCalendarData = async ({ user, db, query }, res) => {
 
-  console.log("[REQUEST] ", query);
+  console.log("[CALENDAR] ", query);
 
-  db.collection("attendances").find({
-    userId: user.userId
-  }).toArray((error, result) => {
-    if (error) {
-      return res.status(500).json({
-        errorMessage: "Something went wrong."
-      });
+  const date = moment(query.date).format() || moment();
+
+  const users = await db.collection('users').find({}).toArray();
+  const holidays = await db.collection('holidays').find({}).toArray();
+  const leaves = await db.collection('leaves').find({}).toArray();
+  const travels = await db.collection('travels').find({}).toArray();
+  const authorizations = await db.collection('authorizations').find({}).toArray();
+
+  // console.log( moment(date).week() );
+  // console.log( moment(moment(date).isoWeek(), 'WW').format('DD-MM-YYYY') );
+  // console.log( moment(moment(date).isoWeek(), 'WW').format('DD-MM-YYYY') );
+  users.map(userItem => {
+    let userCalendar = {
+      userId: userItem.userId,
+      calendar: []
+    }
+    for (let day = parseInt(moment(date).startOf('month').format('D')); day <= parseInt(moment(date).endOf('month').format('D')); day++) {
+
+      let currentDate = moment(`${moment(date).month()}-${day}-${moment(date).year()}`);
+
+      userLeave = leaves.filter(item => (moment(currentDate) >= moment(item.dateForm) && moment(currentDate) <= moment(item.dateTo)) && (item.userId === userItem.userId));
+
+      isDayHoliday = holidays.filter(holiday => moment())
+
+      isDayWeekend = moment(currentDate).format('dddd') === 'Saturday' || moment(currentDate).format('dddd') === 'Sunday' ? true : false;
+
+      // console.log('shit', userCalendar.calendar.push(x))
     }
 
-    if (result.length > 0) {
+    console.log('BZZZ', userCalendar);
+  })
 
-      const { dateFrom, dateTo } = query;
-
-      if (dateFrom && dateTo) {
-        return res.status(200).json({
-          attendances: take(orderBy(result, 'date', 'desc').filter(attendance => new Date(attendance.date) <= new Date(dateTo) && new Date(attendance.date) >= new Date(dateFrom)), 10)
-        });
-      } else if (dateFrom && !dateTo) {
-        return res.status(200).json({
-          attendances: take(orderBy(result, 'date', 'desc').filter(attendance => new Date(attendance.date) >= new Date(dateFrom)), 10)
-        });
-      } else if (!dateFrom && dateTo) {
-        return res.status(200).json({
-          attendances: take(orderBy(result, 'date', 'desc').filter(attendance => new Date(attendance.date) <= new Date(dateTo)), 10)
-        });
-      } else {
-        return res.status(200).json({
-          attendances: take(orderBy(result, 'date', 'desc'), 10)
-        });
-      }
-
-    } else {
-      return res.status(400).json({
-        errorMessage: "No data found."
-      });
-    }
-  });
+  res.status(200).json({
+    first: moment().startOf('month').format('D'),
+    last: moment().endOf('month').format('D'),
+    month: moment().month() + 1
+  })
 };
 
 export default getCalendarData;
