@@ -1,4 +1,5 @@
 import uuid from 'uuid/v4';
+import moment from 'moment';
 
 const createEvent = ({ db, body }, res) => {
 
@@ -13,7 +14,7 @@ const createEvent = ({ db, body }, res) => {
         errorMessage: "Something went wrong."
       });
     }
-   
+
     db.collection('events').insertOne({
       eventId: uuid(),
       title: body.title,
@@ -23,15 +24,20 @@ const createEvent = ({ db, body }, res) => {
       dateFrom: body.dateFrom,
       dateTo: body.dateTo,
       photoFileName: body.photoFileName,
-      logoName: body.logoName
+      logoName: body.logoName,
+      createdAt: moment().format('DD-MM-YYYY H:mm:ss'),
+      createdAtTimestamp: moment().unix()
     },
 
       db.collection('notifications').insertOne({
         notifId: uuid(),
-        title: `${body.title} : New upcaming event` ,
+        title: `${body.title} : New upcaming event`,
         content: body.details,
         category: 'EVENT',
-        toAll: true
+        public: true,
+        vues: [],
+        createdAt: moment().format('DD-MM-YYYY H:mm:ss'),
+        createdAtTimestamp: moment().unix()
       }, (err, result) => {
         if (err) {
           console.log("An error occured.");

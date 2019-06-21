@@ -59,6 +59,8 @@ import vueNotification from "../controllers/notifications/vueNotification";
 
 import generateLeaveCredit from '../controllers/leaveCredit/generateLeaveCredit';
 
+import setHoursPlan from "../controllers/hoursPlan/setHoursPlan";
+
 let database = null;
 MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, db) {   //here db is the client obj
   if (err) {
@@ -156,5 +158,7 @@ router.get("/tracktime/api/notifications", getNotifications);
 router.put("/tracktime/api/notifications/:notifId", vueNotification);
 
 router.put("/tracktime/api/leavecredit", generateLeaveCredit);
+
+router.post("/tracktime/api/hoursplan", setHoursPlan);
 
 export default router;

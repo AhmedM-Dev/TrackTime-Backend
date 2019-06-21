@@ -93,7 +93,6 @@ const createRequest = ({ user, db, body }, res) => {
 
             db.collection('notifications').insertOne({
               notifId: uuid(),
-
               title,
               content: body.motif,
               category: body.requestCategory,
