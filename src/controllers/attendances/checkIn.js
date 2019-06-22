@@ -60,9 +60,10 @@ const CheckIn = ({ db, user }, res) => {
 
           console.log(`Successfully checked in at ${checkAt}. (new attendance)`);
 
-          // const 
+          let todayPlan = await db.collection('hoursPlan').findOne({ planId: moment().format('YYYYMMDD') });
+          const limit = (todayPlan ? moment(todayPlan.beginTimeMax, 'HH:mm').hours() : null) || 9;
 
-          if ((moment(checkAt).hours >= 9)) {
+          if ((moment(checkAt).hours >= limit)) {
             await db.collection("notifications").insertOne({
               notifId: uuid(),
               title: `You have been late today.`,

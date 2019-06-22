@@ -2,7 +2,7 @@ import moment from 'moment';
 
 const setHoursPlan = async ({ db, body }, res) => {
 
-  const { dateFrom, dateTo, periodName, maxWorkingHours, maxDelayTime, allowedDelay } = body;
+  const { dateFrom, dateTo, periodName, requiredWorkingHours, allowedDelaysPerMonth, beginTime, beginTimeMax, } = body;
 
   try {
 
@@ -16,9 +16,10 @@ const setHoursPlan = async ({ db, body }, res) => {
           $set: {
             _id: moment(start).format('YYYY-MM-DD'),
             periodName,
-            maxWorkingHours,
-            maxDelayTime,
-            allowedDelay,
+            requiredWorkingHours,
+            allowedDelaysPerMonth,
+            beginTime,
+            beginTimeMax,
             date: moment(start).format(),
             updatedAt: moment().format()
           }
