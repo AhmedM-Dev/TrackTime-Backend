@@ -2,6 +2,9 @@ import { scheduleJob, RecurrenceRule } from 'node-schedule';
 import moment from 'moment';
 import uuid from 'uuid/v4';
 
+import ComputeScores from './ComputeScores';
+import AddLeaveCredits from './AddLeaveCredits';
+
 const scheduler = (db) => {
 
   console.log("Started scheduler.");
@@ -64,16 +67,26 @@ const scheduler = (db) => {
     }
   });
 
-  var rule2 = new RecurrenceRule();
-  rule2.date = 1;
-  rule2.hour = 0;
-  rule2.minute = 0;
-  rule2.second = 0;
+  // ========================================= Leave Credits ======================================
 
-  const addLeaveBonus = scheduleJob(rule2, async () => {
-    // Add 2 days as leave score to each user
-    console.log('Add 2 days as leave score to each user');
-  });
+  var creditsRule = new RecurrenceRule();
+  creditsRule.date = 1;
+  creditsRule.hour = 0;
+  creditsRule.minute = 0;
+  creditsRule.second = 0;
+
+  scheduleJob(creditsRule, () => AddLeaveCredits(db));
+
+
+  // ============================================ Scores ==========================================
+
+  var scoresRule = new RecurrenceRule();
+  scoresRule.dayOfWeek = 6; //On Sunday
+  scoresRule.hour = 23;
+  scoresRule.minute = 0;
+  scoresRule.second = 0;
+
+  scheduleJob(scoresRule, () => ComputeScores(db));
 }
 
 export default scheduler;

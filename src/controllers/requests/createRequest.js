@@ -4,11 +4,13 @@ import moment from 'moment';
 
 const vowels = ['a', 'e', 'i', 'o', 'u', 'y'];
 
-const createRequest = ({ user, db, body }, res) => {
+const createRequest = async ({ user, db, body }, res) => {
+  let userCredit = await db.collection('leaveCredit').findOne({ userId: user.userId });
 
   const requestBody = {
     requestId: uuid(),
     ...body,
+    userCredit: body.requestCategory === 'LEAVE' ? (userCredit ? userCredit.credit : 'not avilable') : null,
     fromUser: user.userId,
     fromUserName: `${user.firstName} ${user.lastName}`,
     userRemainingLeaves: 0,
@@ -80,6 +82,7 @@ const createRequest = ({ user, db, body }, res) => {
           if (userGroup) {
 
             let title = '';
+
 
             if (body.requestCategory === 'ATTENDANCE') {
               title = `${user.firstName} ${user.lastName} has requested to correct an attendance at ${moment(body.attendance.date).format('DD-MM-YYYY')}.`;

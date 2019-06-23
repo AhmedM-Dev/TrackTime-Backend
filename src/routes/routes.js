@@ -57,6 +57,7 @@ import getHistory from "../controllers/history/getHistory";
 import getNotifications from "../controllers/notifications/getNotifications";
 import vueNotification from "../controllers/notifications/vueNotification";
 
+import getUserCredit from "../controllers/leaveCredit/getUserCredit";
 import generateLeaveCredit from '../controllers/leaveCredit/generateLeaveCredit';
 
 import setHoursPlan from "../controllers/hoursPlan/setHoursPlan";
@@ -157,6 +158,7 @@ router.delete("/tracktime/api/holidays/:holidayId", removeHoliday);
 router.get("/tracktime/api/notifications", getNotifications);
 router.put("/tracktime/api/notifications/:notifId", vueNotification);
 
+router.get("/tracktime/api/leavecredit", getUserCredit);
 router.put("/tracktime/api/leavecredit", generateLeaveCredit);
 
 router.post("/tracktime/api/hoursplan", setHoursPlan);
