@@ -70,8 +70,17 @@ const getStats = async ({ user, db, query }, res) => {
     } else {
       const result = await db.collection("attendances").find({ userId }).toArray();
 
+      const accepted = await db.collection('requests').find({ fromUser: userId, status: 'accepted' }).toArray();
+      const rejected = await db.collection('requests').find({ fromUser: userId, status: 'rejected' }).toArray();
+      const canceled = await db.collection('requests').find({ fromUser: userId, status: 'canceled' }).toArray();
+      const onHold = await db.collection('requests').  find({ fromUser: userId, status: 'pending' }) .toArray();
+
       return res.status(200).json({
-        ...statistics(parseInt(query.year) ? result.filter(item => new Date(item.date).getFullYear() === parseInt(query.year)) : result)
+        ...statistics(parseInt(query.year) ? result.filter(item => new Date(item.date).getFullYear() === parseInt(query.year)) : result),
+        accepted: accepted.length,
+        rejected: rejected.length,
+        canceled: canceled.length,
+        onHold: onHold.length
       });
     }
   } catch (error) {
@@ -80,25 +89,6 @@ const getStats = async ({ user, db, query }, res) => {
     });
   }
 
-  // db.collection("attendances").find({
-  //   userId
-  // }).toArray((error, result) => {
-  //   if (error) {
-  //     return res.status(500).json({
-  //       errorMessage: "Something went wrong."
-  //     });
-  //   }
-
-  //   if (result.length > 0) {
-  //     return res.status(200).json({
-  //       ...statistics(parseInt(query.year) ? result.filter(item => new Date(item.date).getFullYear() === parseInt(query.year)) : result)
-  //     });
-  //   } else {
-  //     return res.status(400).json({
-  //       errorMessage: "No data found."
-  //     });
-  //   }
-  // });
 };
 
 export default getStats;

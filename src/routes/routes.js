@@ -62,6 +62,8 @@ import generateLeaveCredit from '../controllers/leaveCredit/generateLeaveCredit'
 
 import setHoursPlan from "../controllers/hoursPlan/setHoursPlan";
 
+import setScoreFormula from "../controllers/score/setScoreFormula";
+
 let database = null;
 MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, db) {   //here db is the client obj
   if (err) {
@@ -153,7 +155,7 @@ router.post("/tracktime/api/holidays", addHoliday);
 router.put("/tracktime/api/holidays/:holidayId", editHoliday);
 router.delete("/tracktime/api/holidays/:holidayId", removeHoliday);
 
-// router.get("/tracktime/api/history", getHistory);
+router.get("/tracktime/api/history", getHistory);
 
 router.get("/tracktime/api/notifications", getNotifications);
 router.put("/tracktime/api/notifications/:notifId", vueNotification);
@@ -162,5 +164,7 @@ router.get("/tracktime/api/leavecredit", getUserCredit);
 router.put("/tracktime/api/leavecredit", generateLeaveCredit);
 
 router.post("/tracktime/api/hoursplan", setHoursPlan);
+
+router.post("/tracktime/api/formula", setScoreFormula);
 
 export default router;
