@@ -28,9 +28,11 @@ const registerUser = ({ db, body }, res) => {
           });
         }
 
+        const userUuid = uuid();
+
         db.collection('users').insertOne({
           _id: `${toLower(body.firstName)}.${toLower(body.lastName)}`,
-          userId: uuid(),
+          userId: userUuid,
           email: body.email,
           password: bcrypt.hashSync(body.password),
           displayName: `${body.firstName} ${body.lastName}`,
@@ -92,6 +94,14 @@ const registerUser = ({ db, body }, res) => {
             })
           }
         });
+
+        db.collection('leaveCredit').insertOne({
+          _id: `${toLower(body.firstName)}.${toLower(body.lastName)}`,
+          userId: userUuid,
+          credit: 2,
+          creditId: uuid()
+        });
+        
       });
     }
   });

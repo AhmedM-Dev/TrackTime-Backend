@@ -117,7 +117,7 @@ router.patch("/tracktime/api/users", generateUsers);
 router.put("/tracktime/api/profile/:userId", updateProfile);
 
 router.get("/tracktime/api/avatar", getAvatar);
-router.put("/tracktime/api/avatar", uploadAvatar);
+router.post("/tracktime/api/avatar", uploadAvatar);
 
 router.get("/tracktime/api/groups", getGroups);
 router.post("/tracktime/api/groups", createGroup);

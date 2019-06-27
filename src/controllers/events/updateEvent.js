@@ -1,44 +1,32 @@
-const updateEvent = ({ db, body, params }, res) => {
+const updateEvent = async ({ db, body, params }, res) => {
   console.log('updating:', params);
+  try {
+    const updatedEvent = await db.collection('events').updateOne(
+      { eventId: params.eventId },
+      { $set: { ...body } },
+      { returnNewDocument: true }
+    );
 
-  db.collection('events').updateOne(
-    { eventId: params.eventId },
-    { $set: { ...body } },
-
-    function (err, result) {
-      console.log("RRRR", result);
-
-      if (err) {
-        console.log("An error occured.");
-        return res.status(400).json({
-          error: err
-        });
-      } else if (result) {
-
-        if (JSON.parse(result).nModified > 0) {
-          db.collection('events').find({
-            eventId: params.eventId
-          }).toArray((error, result) => {
-            if (error) {
-              console.log("An error occured.");
-              return res.status(400).json({
-                error
-              });
-            } else {
-              console.log('result ===>', result[0]);
-
-              return res.status(200).json({
-                event: result[0]
-              });
-            }
-          })
-        } else {
-          return res.status(200).json({
-            info: "Nothing to update."
-          });
-        }
-      }
+    await db.collection("notifications").insertOne({
+      notifId: uuid(),
+      title: `The event '${eventToDelete.title}' has been updated.`,
+      content: updatedEvent.details,
+      category: 'EVENT',
+      public: true,
+      vues: [],
+      createdAt: moment().format('DD-MM-YYYY H:mm:ss'),
+      createdAtTimestamp: moment().unix()
     });
+
+    return res.status(200).json({
+      event: updatedEvent
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      error
+    });
+  }
 };
 
 export default updateEvent;

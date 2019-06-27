@@ -17,7 +17,7 @@ const addHoliday = async ({ db, params, body }, res) => {
         { upsert: true, returnNewDocument: true }
       );
 
-      return res.status(200).json({ holiday });
+      return res.status(200).json({ holiday: holiday.value });
     } catch (error) {
       return res.status(500).json({ error });
     }

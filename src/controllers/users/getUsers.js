@@ -33,7 +33,7 @@ const getUsers = async ({ user, db, query }, res) => {
     ]).toArray();
 
     if (toLower(user.businessRole) === 'administrator' || toLower(user.businessRole) === 'ceo' || all) {
-      return res.status(200).json({ users });
+      return res.status(200).json({ users: users.filter(item=> item.userId !== user.userId) });
     } else if (toLower(user.businessRole) === 'pole lead') {
       let group = await db.collection('groups').findOne({ poleLead: user.userId });
 
