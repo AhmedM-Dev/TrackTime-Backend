@@ -7,8 +7,11 @@ const setHoursPlan = async ({ db, body }, res) => {
   try {
 
     let start = moment(dateFrom).format();
+    const holidays = await db.collection('holidays').find({}).toArray();
 
     while (moment(start).format() <= moment(dateTo).format()) {
+
+      let isTodayHoliday = holidays.filter(item => moment(item.date, 'MMMM DD').format('MMMM DD') === moment(start).format('MMMM DD'));
 
       await db.collection('hoursPlan').update(
         { planId: moment(start).format('YYYYMMDD') },
@@ -16,7 +19,7 @@ const setHoursPlan = async ({ db, body }, res) => {
           $set: {
             _id: moment(start).format('YYYY-MM-DD'),
             periodName,
-            requiredWorkingHours,
+            requiredWorkingHours: isTodayHoliday && isTodayHoliday.length > 0 ? 0 : requiredWorkingHours,
             allowedDelaysPerMonth,
             beginTime,
             beginTimeMax,
