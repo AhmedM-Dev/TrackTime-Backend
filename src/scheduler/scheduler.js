@@ -1,5 +1,6 @@
 import { scheduleJob, RecurrenceRule } from 'node-schedule';
 
+import getAvailableYears from './getAvailableYears';
 import CheckAbsences from './CheckAbsences';
 import ComputeScores from './ComputeScores';
 import AddLeaveCredits from './AddLeaveCredits';
@@ -7,6 +8,8 @@ import AddLeaveCredits from './AddLeaveCredits';
 const scheduler = (db) => {
 
   console.log("Started scheduler.");
+
+  getAvailableYears(db);
 
   // =========================================== Absences =========================================
   var absenceRule = new RecurrenceRule();

@@ -64,6 +64,8 @@ import setHoursPlan from "../controllers/hoursPlan/setHoursPlan";
 
 import setScoreFormula from "../controllers/score/setScoreFormula";
 
+import getYears from "../controllers/config/getYears";
+
 let database = null;
 MongoClient.connect('mongodb://localhost:27017/', { useNewUrlParser: true }, function (err, db) {   //here db is the client obj
   if (err) {
@@ -166,5 +168,7 @@ router.put("/tracktime/api/leavecredit", generateLeaveCredit);
 router.post("/tracktime/api/hoursplan", setHoursPlan);
 
 router.post("/tracktime/api/formula", setScoreFormula);
+
+router.get("/tracktime/api/years", getYears);
 
 export default router;

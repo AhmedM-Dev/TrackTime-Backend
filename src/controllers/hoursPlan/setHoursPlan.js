@@ -13,13 +13,15 @@ const setHoursPlan = async ({ db, body }, res) => {
 
       let isTodayHoliday = holidays.filter(item => moment(item.date, 'MMMM DD').format('MMMM DD') === moment(start).format('MMMM DD'));
 
+      let isTodayWeekend = moment(start).format('dddd') === 'Saturday' || moment(start).format('dddd') === 'Sunday' ? true : false;
+
       await db.collection('hoursPlan').update(
         { planId: moment(start).format('YYYYMMDD') },
         {
           $set: {
             _id: moment(start).format('YYYY-MM-DD'),
             periodName,
-            requiredWorkingHours: isTodayHoliday && isTodayHoliday.length > 0 ? 0 : requiredWorkingHours,
+            requiredWorkingHours: (isTodayHoliday && isTodayHoliday.length > 0) || isTodayWeekend ? 0 : requiredWorkingHours,
             allowedDelaysPerMonth,
             beginTime,
             beginTimeMax,

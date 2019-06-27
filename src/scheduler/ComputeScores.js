@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import computePercentage from '../utils/computePercentage';
+
 
 const computePauseTime = (attendances) => {
   let sum = 0;
@@ -31,6 +31,30 @@ const computeWorkTime = (attendances) => {
   }
 }
 
+const computeWT = () => {
+
+}
+
+const computeME = () => {
+
+}
+
+const computeET = () => {
+
+}
+
+const computeWW = () => {
+
+}
+
+const computeDL = () => {
+
+}
+
+const computeLT = () => {
+
+}
+
 const ComputeScores = async (db) => {
   try {
     const users = await db.collection('users').find({}).toArray();
@@ -40,16 +64,43 @@ const ComputeScores = async (db) => {
     const leaves = await db.collection('leaves').find({}).toArray();
 
     // const thisWeekPlan = hoursPlan.filter(item => moment(item.date) >= moment(moment().week(), 'WW') && )
-    
+
     if (users && users.length > 0) {
-      users.map(user => {
-        //Computing scores for users
-        let userAttendances = attendances.filter(item => item.userId === user.userId);
+      let currentDate = moment(moment().week(), 'WW').format()
 
-        let WT = computeWorkTime(userAttendances.attendances).workTime;
+      while (currentDate <= moment().format()) {
+
+        users.map(user => {
+          //Computing scores for users
+
+          let WT = ME = ET = WW = DL = LT = 0;
+
+          let userAttendances = attendances.filter(item => item.userId === user.userId && moment(item.date).format('YYYY-MM-DD') === moment(currentDate).format('YYYY-MM-DD'));
+
+          let currentPlan = hoursPlan.filter(item => moment(item.date).format('YYYY-MM-DD') === moment(currentDate).format('YYYY-MM-DD'))
+
+          let isTodayLeave = leaves.filter(item => item.forUser === user.userId && moment(currentDate).format('YYYY-MM-DD') >= moment(item.dateFom).format('YYYY-MM-DD') && moment(currentDate).format('YYYY-MM-DD') <= moment(item.dateTo).format('YYYY-MM-DD'))
+
+          if (userAttendances && userAttendances.length > 0) {
+            WT = moment(computeWorkTime(userAttendances.attendances).workTime, 'HH:mm:ss') / moment(currentPlan.requiredWorkingHours, 'HH:mm:ss');
+
+            let ME = (moment(currentPlan.beginTimeMax, 'HH:mm:ss') - moment(userAttendances.attendances[0], 'HH:mm:ss')) / (moment(currentPlan.beginTimeMax, 'HH:mm:ss') - moment(currentPlan.beginTimeMax, 'HH:mm:ss'));
+            
+            let ET = moment(currentPlan.requiredWorkingHours, 'HH:mm:ss') > moment(computeWorkTime(userAttendances.attendances).workTime, 'HH:mm:ss') ? 0 : moment(computeWorkTime(userAttendances.attendances).workTime, 'HH:mm:ss') / moment(currentPlan.requiredWorkingHours, 'HH:mm:ss');
+
+            // let WW = 
 
 
-      })
+
+          } else if (isTodayLeave) {
+            WT = 1;
+          }
+
+
+        })
+
+        currentDate = moment(currentDate).add(1, 'days').format();
+      }
     }
 
   } catch (error) {
