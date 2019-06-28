@@ -88,9 +88,11 @@ const ComputeScores = async (db) => {
             
             let ET = moment(currentPlan.requiredWorkingHours, 'HH:mm:ss') > moment(computeWorkTime(userAttendances.attendances).workTime, 'HH:mm:ss') ? 0 : moment(computeWorkTime(userAttendances.attendances).workTime, 'HH:mm:ss') / moment(currentPlan.requiredWorkingHours, 'HH:mm:ss');
 
-            // let WW = 
+            let WW = moment(currentDate).format('dddd') === "Saturday" || moment(currentDate).format('dddd') === "Sunday" ? 1 : 0;
 
+            let DL = '';
 
+            // let LT = moment(computeWorkTime(userAttendances.attendances).workTime, 'HH:mm:ss') > moment(currentPlan.requiredWorkingHours, 'HH:mm:ss') ? 0 : 
 
           } else if (isTodayLeave) {
             WT = 1;
