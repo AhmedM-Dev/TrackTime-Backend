@@ -71,7 +71,7 @@ const getAttendances = async ({ user, db, query }, res) => {
       }
 
       return res.status(200).json({
-        attendances: take(orderBy(moddedAttendances, 'date', 'desc'), 20)
+        attendances: take(orderBy(moddedAttendances, 'date', 'desc'), 10)
       });
     }
 

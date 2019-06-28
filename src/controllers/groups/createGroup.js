@@ -42,7 +42,7 @@ const createGroup = ({ db, body }, res) => {
 
             if (addedGroup) {
               return res.status(200).json({
-                user: addedGroup[0]
+                group: addedGroup[0]
               });
             }
           })

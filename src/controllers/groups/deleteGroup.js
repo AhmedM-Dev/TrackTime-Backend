@@ -7,9 +7,13 @@ const deleteGroup = ({ db, params }, res) => {
       return res.status(400).json({
         error: err
       });
-    } else if (result) {
+    }
+
+
+    
+    if (result) {
       return res.status(200).json({
-        result
+        groupId: params.groupId
       });
     }
   });

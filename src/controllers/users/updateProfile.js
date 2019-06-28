@@ -14,7 +14,7 @@ const updateProfile = async ({ db, body, params }, res) => {
         { userId: params.userId },
         { $set: {
           email: body.email ? body.email : oldUser.email,
-          password: body.password ? body.password : oldUser.password
+          password: body.password ? bcrypt.hashSync(body.password) : oldUser.password
         } },
         { returnNewDocument: true }
       );

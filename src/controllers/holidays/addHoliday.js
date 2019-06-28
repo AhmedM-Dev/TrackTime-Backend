@@ -7,10 +7,14 @@ const addHoliday = async ({ user, db, body }, res) => {
   if (body && Object.keys(body).length > 0) {
 
     try {
-      const holiday = await db.collection('holidays').insertOne({
-        holidayId: uuid(),
+      const holidayId = uuid();
+
+      await db.collection('holidays').insertOne({
+        holidayId,
         ...body
       });
+
+      const holiday = await db.collection('holidays').findOne({ holidayId });
 
       return res.status(200).json({ holiday });
     } catch (error) {

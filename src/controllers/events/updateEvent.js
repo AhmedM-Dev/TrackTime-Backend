@@ -1,15 +1,22 @@
+import moment from 'moment';
+import uuid from 'uuid/v4';
+
 const updateEvent = async ({ db, body, params }, res) => {
   console.log('updating:', params);
-  try {
-    const updatedEvent = await db.collection('events').updateOne(
+
+    const { _id, ...bodyContent } = body;
+
+    await db.collection('events').updateOne(
       { eventId: params.eventId },
-      { $set: { ...body } },
+      { $set: { ...bodyContent } },
       { returnNewDocument: true }
     );
 
+    const updatedEvent = await db.collection('events').findOne({ eventId: params.eventId });
+
     await db.collection("notifications").insertOne({
       notifId: uuid(),
-      title: `The event '${eventToDelete.title}' has been updated.`,
+      title: `The event '${updatedEvent.title}' has been updated.`,
       content: updatedEvent.details,
       category: 'EVENT',
       public: true,
@@ -22,11 +29,7 @@ const updateEvent = async ({ db, body, params }, res) => {
       event: updatedEvent
     });
 
-  } catch (error) {
-    return res.status(500).json({
-      error
-    });
-  }
+
 };
 
 export default updateEvent;

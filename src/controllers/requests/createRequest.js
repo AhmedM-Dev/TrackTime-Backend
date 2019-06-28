@@ -9,7 +9,7 @@ const createRequest = async ({ user, db, body }, res) => {
     const userCredit = await db.collection('leaveCredit').findOne({ userId: user.userId });
     const userGroup = await db.collection("groups").findOne({ groupId: user.groupId });
 
-    await db.collection('requests').insertOne({
+    const requestBody = {
       requestId: uuid(),
       ...body,
       userCredit: body.requestCategory === 'LEAVE' ? (userCredit ? userCredit.credit : 'not avilable') : null,
@@ -19,7 +19,9 @@ const createRequest = async ({ user, db, body }, res) => {
       status: "pending",
       createdAt: moment().format('DD-MM-YYYY H:mm:ss'),
       createdAtTimestamp: moment().unix()
-    });
+    }
+
+    await db.collection('requests').insertOne(requestBody);
 
     if (userGroup) {
       let title = '';
